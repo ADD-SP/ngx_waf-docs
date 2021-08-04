@@ -32,6 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [6.1.1] - 2021-08-04 UTC+0800
+
+### Fixed
+
+* Under Attack Mode (UAM) sometimes does not work correctly.
+
+***
+
 ## [6.1.0] - 2021-08-03 UTC+0800
 
 ### Added
