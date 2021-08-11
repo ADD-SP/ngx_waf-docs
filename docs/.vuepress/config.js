@@ -20,7 +20,7 @@ module.exports = {
     themeConfig: {
         repo: "https://github.com/ADD-SP/ngx_waf/",
         repoLabel: "Github",
-        docsRepo: "https://github.com/ADD-SP/ngx_waf/",
+        docsRepo: "https://github.com/ADD-SP/ngx_waf-docs/",
         docsDir: "docs",
         editLinks: true,
         smoothScroll: true,
@@ -30,6 +30,10 @@ module.exports = {
                 label: "English",
                 lastUpdated: "Last Updated",
                 editLinkText: "Help us improve this page!",
+                nav: [
+                    { text: 'Best Practices', link: '/practice/overview.html' },
+                    { text: 'CHANGES', link: '/changes/overview.html' }
+                ],
                 sidebar: [
                     {
                         title: "Quick Start",
@@ -58,28 +62,6 @@ module.exports = {
                         ]
                     },
                     {
-                        title: "Best Practices",
-                        path: "/practice/overview.html",
-                        children: [
-                            "/practice/overview.md",
-                            "/practice/limit-the-rate-per-arbitrary-url.md"
-                        ]
-                    },
-                    {
-                        title: "Change Log",
-                        path: "/changes/overview.html",
-                        children: [
-                            "/changes/overview.md",
-                            "/changes/lts.md",
-                            "/changes/current.md",
-                            "/changes/6_0_x.md",
-                            "/changes/5_x_x.md",
-                            "/changes/4_x_x.md",
-                            "/changes/3_x_x.md",
-                            "/changes/2_x_x.md"
-                        ]
-                    },
-                    {
                         title: "Roadmap (Advice Needed)",
                         path: "/roadmap/overview.html",
                         children: [
@@ -92,6 +74,10 @@ module.exports = {
                 label: "简体中文",
                 lastUpdated: "最后一次更新",
                 editLinkText: "帮助我们改善此页面！",
+                nav: [
+                    { text: '最佳实践', link: '/zh-cn/practice/overview.html' },
+                    { text: '更新日志', link: '/zh-cn/changes/overview.html' }
+                ],
                 sidebar: [
                     {
                         title: "快速上手",
@@ -117,28 +103,6 @@ module.exports = {
                             "/zh-cn/advance/log.md",
                             "/zh-cn/advance/upgrade.md",
                             "/zh-cn/advance/issue.md",
-                        ]
-                    },
-                    {
-                        title: "最佳实践",
-                        path: "/zh-cn/practice/overview.html",
-                        children: [
-                            "/zh-cn/practice/overview.md",
-                            "/zh-cn/practice/limit-the-rate-per-arbitrary-url.md"
-                        ]
-                    },
-                    {
-                        title: "更新日志",
-                        path: "/zh-cn/changes/overview.html",
-                        children: [
-                            "/zh-cn/changes/overview.md",
-                            "/zh-cn/changes/lts.md",
-                            "/zh-cn/changes/current.md",
-                            "/zh-cn/changes/6_0_x.md",
-                            "/zh-cn/changes/5_x_x.md",
-                            "/zh-cn/changes/4_x_x.md",
-                            "/zh-cn/changes/3_x_x.md",
-                            "/zh-cn/changes/2_x_x.md"
                         ]
                     },
                     {

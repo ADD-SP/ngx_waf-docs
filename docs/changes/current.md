@@ -31,6 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [7.0.1] - 2021-08-11 UTC+0800
+
+### Fixed
+
+* Failed to parse `0.0.0.0/0` correctly when handling IP black and white lists.
+
+* Compatible with environments that do not support IPV6.
+
 ## [7.0.0] - 2021-08-04 UTC+0800
 
 ### Changed
