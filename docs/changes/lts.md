@@ -32,6 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [6.2.0] - 2021-08-16 UTC+0800
+
+### Added
+
+* The parameter `rate` of the directive `waf_cc_deny` allows more formats, such as `500r/s`, `500r/60s`, `500r/m`, `500r/60m`, `500r/h`, `500r/60h` and `500r/d`.
+
+***
+
 ## [6.1.2] - 2021-08-11 UTC+0800
 
 ### Fixed
