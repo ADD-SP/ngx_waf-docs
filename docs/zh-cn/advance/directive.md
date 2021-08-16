@@ -204,4 +204,4 @@ waf_mode !UA STD;
 此指令用于设置请求被拦截时返回的 HTTP 状态码。
 
 * `general`: 表示所有基于黑名单的检测项目触发后返回的 HTTP 状态码。
-* `cc_dney`：表示 CC 防护触发后返回的 HTTP 状态码。
+* `cc_deny`：表示 CC 防护触发后返回的 HTTP 状态码。

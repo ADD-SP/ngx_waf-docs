@@ -208,6 +208,6 @@ Set the priority of each inspection process, except for POST detection, which al
 This directive is used to set the HTTP status code returned when a request is blocked.
 
 * `general`: Indicates the HTTP status code returned when all blacklist-based inpection are triggered.
-* `cc_dney`: Indicates the HTTP status code returned when CC protection is triggered.
+* `cc_deny`: Indicates the HTTP status code returned when CC protection is triggered.
 
 

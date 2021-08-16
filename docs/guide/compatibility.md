@@ -24,11 +24,11 @@ There is a compatibility issue between ngx_waf and
 * The module does not take effect if the request directive `return` takes effect.
 * The module does not take effect if the request directive `rewrite` results in a return (e.g., a 302 redirect).
 
-::: tip Replace `rewrite` with `try_files`.
+::: tip Replace 'rewrite' with 'try_files'.
 
 You may have the following configuration.
 
-``nginx
+```nginx
 if (! -e $request_filename) {
     rewrite (. *) /index.php
 }
@@ -36,7 +36,7 @@ if (! -e $request_filename) {
 
 You can replace it with the following configuration.
 
-``nginx
+```nginx
 try_files $uri $uri/ /index.php;
 ```
 
