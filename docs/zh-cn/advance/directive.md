@@ -91,13 +91,13 @@ waf_mode !UA STD;
 
 ## `waf_cc_deny`
 
-* 配置语法: waf_cc_deny \<rate=*n*r/t\> \[duration=*1h*\] \[size=*20m*\]
+* 配置语法: waf_cc_deny \<rate=*n*r/m\> \[duration=*1h*\] \[size=*20m*\]
 * 默认配置：—
 * 配置段: http, server, location
 
 设置 CC 防护相关的参数。
 
-* `rate`：表示一段时间内的请求次数的上限，如 `500r/s`、`500r/60s`、`500r/m`、`500r/60m`、`500r/h`、`500r/60h` 和 `500r/d`。超出限制后会返回 [503 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503)，并附带 [Retry-After](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After) 响应头。
+* `rate`：表示一段时间内的请求次数的上限，如 `500r/m`。超出限制后会返回 [503 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503)，并附带 [Retry-After](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After) 响应头。
 * `duration`：表示超出第一个参数 `rate` 的限制后拉黑 IP 的时间，如 `60s`、`60m`、`60h` 和 `60d`，如不指定则默认为 `1h`。
 * `size`：用于设置记录 IP 访问次数的内存的大小，如 `20m`、`2048k`，不得小于 `20m`，如不指定则默认为 `20m`。当这段内存耗尽的时候程序会自动重置这块内存以重新统计 IP 的访问次数。
 
@@ -105,6 +105,8 @@ waf_mode !UA STD;
 ::: tip 'Current' 版本中的变化
 
 不允许在 `http` 这一级中使用此配置项。
+
+* `rate`：表示一段时间内的请求次数的上限，如 `500r/s`、`500r/60s`、`500r/m`、`500r/60m`、`500r/h`、`500r/60h` 和 `500r/d`。超出限制后会返回 [503 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503)，并附带 [Retry-After](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After) 响应头。
 
 :::
 
