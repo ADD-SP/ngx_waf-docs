@@ -30,7 +30,7 @@ You may have the following configuration.
 
 ```nginx
 if (! -e $request_filename) {
-    rewrite (. *) /index.php
+    rewrite (.*) /index.php
 }
 ```
 
