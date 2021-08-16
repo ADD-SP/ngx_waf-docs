@@ -24,7 +24,7 @@ lang: zh-CN
 * 当 `return` 指令生效时模块不会生效。
 * 当 `rewrite` 指令造成了返回（如 302 重定向）时模块不会生效。
 
-::: tip 使用 `try_files` 代替 `rewrite`
+::: tip 使用 try_files 代替 rewrite
 
 你可能会有下列的配置。
 
