@@ -11,21 +11,29 @@ The following is a list of all the tests in order of priority, from top to botto
 
 1. IP whitelist inspection
 2. IP blacklist inspection
-3. CC protection
-4. Under attack mode
-5. Url whitelist inspection
-6. Url blacklist inspection
-7. Get parameter blacklist inspection
-8. User-Agent blacklist inspection
-9. Referer whitelist inspection
-10. Referer blacklist inspection
-11. Cookie blacklist inspection
-12. Advanced rules
-13. Post request body blacklist
+3. Friendly crawler verification <Badge text="Latest Current version only" type="tip"/>
+4. CC protection
+5. CAPTCHA <Badge text="Latest Current version only" type="tip"/>
+6. Under attack mode
+7. Url whitelist inspection
+8. Url blacklist inspection
+9. Get parameter blacklist inspection
+10. User-Agent blacklist inspection
+11. Referer whitelist inspection
+12. Referer blacklist inspection
+13. Cookie blacklist inspection
+14. Advanced rules
+15. Post request body blacklist
 
 
 ::: tip Change priority
 
 You can modify the priority through the configuration file, but the priority of the POST request body detection is not allowed to be modified, it will always have the lowest priority. See [waf_priority](directive.md#waf-priority) for details
+
+:::
+
+::: tip CHANGES IN LATEST 'Current' VERSION
+
+Allows the priority of the request body inspection to be modified by the directive [waf_priority](directive.md#waf-priority).
 
 :::

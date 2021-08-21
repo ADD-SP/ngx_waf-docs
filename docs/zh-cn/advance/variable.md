@@ -43,6 +43,8 @@ lang: zh-CN
 + `'BLACK-COOKIE'`
 + `'BLACK-POST'`
 + `'UNDER-ATTACK'`
++ `'FAKE-BOT'`
++ `'CAPTCHA'`
 
 ## `$waf_rule_details`
 

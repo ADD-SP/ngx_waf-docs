@@ -88,6 +88,16 @@ The mode of `CC` is independent of other modes, and whether it takes effect or n
 
 :::
 
+::: tip CHANGES IN LATEST 'Current' VERSION
+
+The parameters `CC` and `CACHE` are removed.
+
+* STD: Standard working mode, equivalent to `HEAD GET POST IP URL RBODY ARGS UA LIB-INJECTION-SQLI`.
+* STATIC: working mode for static sites, equivalent to `HEAD GET IP URL UA`.
+* DYNAMIC: working mode for dynamic sites, equivalent to `HEAD GET POST IP URL ARGS UA RBODY COOKIE LIB-INJECTION-SQLI`.
+
+:::
+
 ## `waf_cc_deny`
 
 * syntax: waf_cc_deny \<rate=*n*r/m\> \[duration=*1h*\] \[size=*20m*\]
@@ -101,11 +111,16 @@ Set the parameters related to CC protection.
 * `size`: Used to set the size of the memory for recording IP accesses, such as `20m`, `2048k`, must not be less than `20m`, if not specified, the default is `20m`. When this memory is exhausted, the program will automatically reset this memory to recount the IP accesses.
 
 
-::: tip CHANGES IN 'Current' VERSION
+::: tip CHANGES IN LATEST 'Current' VERSION
 
-It is not allowed to use this directive in the context `http`.
+* syntax: waf_cc_deny \<*off* | *on* | *CAPTCHA*\> \<rate=*n*r/t\> \[duration=*1h*\] \[size=*20m*\]
+* default: waf_cc_deny *off* duration=*1h* size=*20m*
+* context: server, location
 
-* `rate`: Indicates the upper limit of the number of requests over a period of time, such as `500r/s`, `500r/60s`, `500r/m`, `500r/60m`, `500r/h`, `500r/60h` and `500r/d`. Exceeding the limit returns a [503 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) with a [Retry-After](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After) response header.
+***
+
+* `CAPTCHA`. When the request rate exceeds the set value, use CAPTCHA authentication to disable the IP if it fails three times in a row, and vice versa to recalculate the request frequency. When you enable this option, you must set the parameters `prov`, `file` and `secret` of the directive [waf_captcha](#waf-captcha).
+* `rate`: indicates the upper rate of requests, such as `500r/s`, `500r/60s`, `500r/m`, `500r/60m`, `500r/h`, `500r/60h` and `500r/d`. Exceeding the limit returns a [503 status code](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503) with a [after retry](https://developer.mozilla.org/zh-) CN/ docs/Web/HTTP/Headers/Retry-After) response header.
 
 :::
 
@@ -138,6 +153,68 @@ So please set it reasonably according to your actual needs.
 :::
 
 
+::: tip CHANGES IN LATEST 'Current' VERSION
+
+* syntax: waf_cache \<*off* | *on*\> \[capacity=*50*\]
+* default: waf_cache *off* \capacity=*50*
+* context: server, location
+
+:::
+
+
+## `waf_captcha` <Badge text="Latest Current version only" type="tip"/>
+
+* syntax: waf_captcha \<*on* | *off*\> \[prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\] \[file=*/full/path*\] \[secret=*your_secret*\] \[score =*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
+* default: waf_captcha off
+* context: http, server, location
+
+Use CAPTCHA for human identification of the client.
+
+* `prov`: CAPTCHA platform with [hCaptcha](https://www.hcaptcha.com/), [reCAPTCHAv2](https://www.google.com/recaptcha/about/) and [reCAPTCHAv3](https:/ /www.google.com/recaptcha/about/).
+* `file`: the absolute path of the HTML file used to access the CAPTCHA, you can find the corresponding HTML file under `assets/`.
+* `secret`: the key used to confirm the result of the CAPTCHA, you can get it from the corresponding CAPTCHA platform.
+* `socre`: when `prov=reCAPTCHAv3`, this indicates the minimum value of the CAPTCHA scoring result, below which the validation will be considered as failed. The default value is `0.5`.
+* ``expire``: the expiration time of the CAPTCHA, after which the CAPTCHA needs to be re-run. The default is 30 minutes.
+* `api`: The API provided by the CAPTCHA platform to the server to confirm the result of the CAPTCHA run.
+    * If `prov=hCaptcha`, the default value is `https://hcaptcha.com/siteverify`.
+    * If `prov=reCAPTCHAv2`, then the default value is `https://www.recaptcha.net/recaptcha/api/siteverify`.
+    * If `prov=reCAPTCHAv3`, the default value is `https://www.recaptcha.net/recaptcha/api/siteverify`.
+* `verify`: the url used by the captcha to submit the token to the backend, defaults to `/captcha`.
+
+
+:::tip Fill in your Sitekey
+
+You can find the HTML used for each CAPTCHA in the directory `assets/` and make a copy of it, then fill in your `Sitekey' in the copy.
+
+:::
+
+
+## `waf_verify_bot` <Badge text="Latest Current version only" type="tip"/>
+
+* syntax: waf_verify_bot \<*off* | *on* | *strict*\> \[*who*\] ...
+* default: waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot*
+* context: http, server, location
+
+Verify friendly crawlers, such as GoogleBot.
+
+If the first parameter is `on` then all subsequent checks will be stopped and the request will be released.
+
+If the first parameter is `strict`, then if the User-Agent of a request is correct, but the IP address is incorrect, it will be blocked (with false positives).
+
+* `who`: the name of the crawler, values include `GoogleBot`, `BingBot`, `BaiduSpider` and `YandexBot`. If not specified, the default is all.
+
+::: tip How IT WORKS?
+
+* [Overview of Google crawlers (user agents) | Search Central](https://developers.google.com/search/docs/advanced/crawling/overview-google-crawlers)
+* [Googlebot Verification | Google Search Central | Google Developers](https://developers.google.com/search/docs/advanced/crawling/verifying-googlebot)
+* [Which Crawlers Does Bing Use? - Bing Webmaster Tools](https://www.bing.com/webmasters/help/which-crawlers-does-bing-use-8c184ec0)
+* [How to Verify Bingbot](https://www.bing.com/webmasters/help/how-to-verify-bingbot-3905dc26)
+* [Baidu User Service Center - Webmaster Platform](https://help.baidu.com/question?prod_id=99&class=0&id=3001)
+* [How to check that a robot belongs to Yandex](https://yandex.com/support/webmaster/robot-workings/check-yandex-robots.html)
+
+:::
+
+
 ## `waf_under_attack`
 
 * syntax: waf_under_attack \<*on* | *off*\> \[uri=*str*\]
@@ -160,7 +237,7 @@ Naturally, you can also write your own html file and point to it with `uri`.
 :::
 
 
-::: tip CHANGES IN 'Current' VERSION
+::: tip CHANGES IN LATEST 'Current' VERSION
 
 In the LTS version we implemented this feature through redirects, but many reasons (such as caching and CDN) would cause the redirects to fail or not validate the cookie properly.
 So we changed the implementation so that we return the specified page by changing the response body in a way that does not cause the URI to change.
@@ -197,6 +274,19 @@ Set the priority of each inspection process, except for POST detection, which al
 ::: warning WARNING
 
 `str` must be wrapped in single or double quotes, and `str` must contain all of the inspection process.
+
+:::
+
+
+::: tip CHANGES IN LATEST 'Current' VERSION
+
+* default: waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE ADV POST"
+
+***
+
+* `VERIFY-BOT`: friendly crawler verification.
+* `CAPTCHA`: Captcha.
+* `POST`：Request body blacklist.
 
 :::
 

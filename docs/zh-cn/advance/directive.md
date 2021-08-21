@@ -89,10 +89,21 @@ waf_mode !UA STD;
 :::
 
 
+::: tip 最新的 Current 版本中的变化
+
+参数 `CC` 和 `CACHE` 被删除。
+
+* STD：标准工作模式，等价于 `HEAD GET POST IP URL RBODY ARGS UA LIB-INJECTION-SQLI`。
+* STATIC：适用于静态站点的工作模式，等价于 `HEAD GET IP URL UA`。
+* DYNAMIC：适用于动态站点的工作模式，等价于 `HEAD GET POST IP URL ARGS UA RBODY COOKIE LIB-INJECTION-SQLI`。
+
+:::
+
+
 ## `waf_cc_deny`
 
 * 配置语法: waf_cc_deny \<rate=*n*r/m\> \[duration=*1h*\] \[size=*20m*\]
-* 默认配置：—
+* 默认配置：——
 * 配置段: http, server, location
 
 设置 CC 防护相关的参数。
@@ -102,10 +113,16 @@ waf_mode !UA STD;
 * `size`：用于设置记录 IP 访问次数的内存的大小，如 `20m`、`2048k`，不得小于 `20m`，如不指定则默认为 `20m`。当这段内存耗尽的时候程序会自动重置这块内存以重新统计 IP 的访问次数。
 
 
-::: tip 'Current' 版本中的变化
+::: tip 最新的 Current 版本中的变化
 
-不允许在 `http` 这一级中使用此配置项。
+* 配置语法: waf_cc_deny \<*off* | *on* | *CAPTCHA*\> \<rate=*n*r/t\> \[duration=*1h*\] \[size=*20m*\]
+* 默认配置：waf_cc_deny *off* duration=*1h* size=*20m*
+* 配置段: server, location
 
+***
+
+* `CAPTCHA`：当请求频率超出设定值时会使用验证码进行验证，如果连续三次验证失败则拉黑 IP，反之重新计算请求频率。
+当你启用了此选项时，你必须设置 [waf_captcha](#waf-captcha) 的 `prov`、`file` 和 `secret` 这三个参数。
 * `rate`：表示一段时间内的请求次数的上限，如 `500r/s`、`500r/60s`、`500r/m`、`500r/60m`、`500r/h`、`500r/60h` 和 `500r/d`。超出限制后会返回 [503 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503)，并附带 [Retry-After](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After) 响应头。
 
 :::
@@ -134,6 +151,68 @@ waf_mode !UA STD;
 :::
 
 
+::: tip 最新的 Current 版本中的变化
+
+* 配置语法: waf_cache \<*off* | *on*\> \[capacity=*50*\]
+* 默认配置：waf_cache *off* \capacity=*50*
+* 配置段: server, location
+
+:::
+
+
+## `waf_captcha` <Badge text="仅限最新的 Current 版本" type="tip"/>
+
+* 配置语法: waf_captcha \<*on* | *off*\> \[prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\] \[file=*/full/path*\] \[secret=*your_secret*\] \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
+* 默认配置：waf_captcha off
+* 配置段: http, server, location
+
+使用验证码对客户端进行人机识别。
+
+* `prov`：验证码平台，包含 [hCaptcha](https://www.hcaptcha.com/)、[reCAPTCHAv2](https://www.google.com/recaptcha/about/) 和 [reCAPTCHAv3](https://www.google.com/recaptcha/about/)。
+* `file`：用于接入验证码的 HTML 文件的绝对路径，你可以从 `assets/` 下找到对应的 HTML 文件。
+* `secret`：用于确认验证码的运行结果的密钥，你可以从对应的验证码平台获得。
+* `socre`：当 `prov=reCAPTCHAv3` 时，这个表示验证码打分结果的下限，低于这个值会被视为验证失败。默认值为 `0.5`。
+* `expire`：验证码的过期时间，过期后需要重新运行验证码。默认为 30 分钟。
+* `api`：验证码平台的提供给服务端的 API，用于确认验证码的运行结果。
+    * 如果 `prov=hCaptcha`，则默认值为 `https://hcaptcha.com/siteverify`。
+    * 如果 `prov=reCAPTCHAv2`，则默认值为 `https://www.recaptcha.net/recaptcha/api/siteverify`。
+    * 如果 `prov=reCAPTCHAv3`，则默认值为 `https://www.recaptcha.net/recaptcha/api/siteverify`。
+* `verify`：验证码向后端提交 token 所用的 url，默认为 `/captcha`。
+
+
+::: tip 填写你的 Sitekey
+
+你可以在 `assets/` 目录下找到接入每个验证码所使用的 HTML 并拷贝一份，然后在副本中填入你的 `Sitekey`。
+
+:::
+
+
+## `waf_verify_bot` <Badge text="仅限最新的 Current 版本" type="tip"/>
+
+* 配置语法: waf_verify_bot \<*off* | *on* | *strict*\> \[*who*\] ...
+* 默认配置：waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot*
+* 配置段: http, server, location
+
+验证友好的爬虫，比如百度蜘蛛。
+
+如果第一个参数是 `on` 则会停止后续的所有检查并放行本次请求。
+
+如果第一个参数是 `strict`，则如果某个请求的 User-Agent 正确，但是 IP 地址不正确则会被拦截（有误报）。
+
+* `who`：爬虫的名称，取值包括 `GoogleBot`、`BingBot`、`BaiduSpider` 和 `YandexBot`。如不指定则默认为全部。
+
+::: tip 工作原理
+
+* [Overview of Google crawlers (user agents)  |  Search Central](https://developers.google.com/search/docs/advanced/crawling/overview-google-crawlers)
+* [Googlebot Verification | Google Search Central  |  Google Developers](https://developers.google.com/search/docs/advanced/crawling/verifying-googlebot)
+* [Which Crawlers Does Bing Use? - Bing Webmaster Tools](https://www.bing.com/webmasters/help/which-crawlers-does-bing-use-8c184ec0)
+* [How to Verify Bingbot](https://www.bing.com/webmasters/help/how-to-verify-bingbot-3905dc26)
+* [百度用户服务中心-站长平台](https://help.baidu.com/question?prod_id=99&class=0&id=3001)
+* [How to check that a robot belongs to Yandex](https://yandex.com/support/webmaster/robot-workings/check-yandex-robots.html)
+
+:::
+
+
 ## `waf_under_attack`
 
 * 配置语法: waf_under_attack \<*on* | *off*\> \[uri=*str*\]
@@ -156,7 +235,7 @@ waf_mode !UA STD;
 :::
 
 
-::: tip 'Current' 版本中的变化
+::: tip 最新的 Current 版本中的变化
 
 在 LTS 版本中我们通过重定向实现了该功能，但是许多原因（如缓存和 CDN）会导致重定向失败，或者不能正常验证 Cookie。
 所以我们修改了实现方式，我们通过修改响应体来返回指定的网页，这种方式不会导致 URI 的改变。
@@ -193,6 +272,18 @@ waf_mode !UA STD;
 ::: warning 警告
 
 `str` 必须使用单引号或者双引号包裹，且 `str` 必须包含全部的检测项目。
+
+:::
+
+
+::: tip 最新的 Current 版本中的变化
+
+* 默认配置：waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE ADV"
+
+***
+
+* `VERIFY-BOT`：友好爬虫验证。
+* `CAPTCHA`：验证码。
 
 :::
 
