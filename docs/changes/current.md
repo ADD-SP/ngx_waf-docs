@@ -31,6 +31,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [8.0.0] - 2021-08-21 UTC+0800
+
+### **NOTE**
+
+If you would like to upgrade to this version, please see the documentation for guidelines on upgrading across versions.
+
+### Added
+
+* Introduced CAPTCHAs for third-party platforms, supporting hCaptcha, reCAPTCHAv2 and reCAPTCHAv3, with the associated directive `waf_captcha`.
+
+* Support recognizing friendly crawlers, including GooleBot, BingBot, BaiduSpider and YandexBot, and automatically allow them after successful recognition, the related command is `waf_verify_bot`.
+
+* CC protection supports enabling CAPTCHA mode, which enables CAPTCHA when the request rate exceeds the limit, and blocks the IP if the CAPTCHA fails three times in a row, and recounts the request rate on the contrary.
+
+
+### Changed
+
+* The syntax of the directive `waf_mode` has changed, see the documentation for a guide to cross-version upgrades.
+
+* The syntax of the directive `waf_cc_deny` has changed, see the documented guide to cross-version upgrades for details.
+
+* The syntax of the directive `waf_cache` has been changed, see the cross-version upgrade guide in the documentation.
+
+* Support for modifying the priority of `request_body_check`.
+
+
+### Removed
+
+* Removed two parameters of the directive `waf_cache`: `interval` and `percent`.
+
+
+***
+
 ## [7.1.0] - 2021-08-16 UTC+0800
 
 ### Added

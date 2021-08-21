@@ -201,3 +201,61 @@ cp objs/*.so /usr/local/nginx/modules
 ```vim
 load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 ```
+
+## 宝塔面板
+
+有人建议提供一个宝塔面板的安装教程，我们就试着写了个半成品。
+
+由于我们没用过宝塔，所以宝塔的安装教程是参考[宝塔面板安装ngx_waf，高性能的Nginx防火墙模块自带类似cf的防cc攻击的5秒盾-陌涛的记事本](https://imotao.com/5888.html)写成的，并且未经验证。
+
+1. 在 shell 中运行命令
+    ```shell
+    # Centos7
+    yum update && yum install -y flex bison libcurl libcurl-devel git
+    cd /usr/local/src
+    git clone https://github.com/jedisct1/libsodium.git --branch stable libsodium-src
+    cd libsodium-src
+    ./configure --prefix=/usr/local/src/libsodium-build --with-pic
+    make -j$(nproc)
+    make install
+
+    # Ubuntu
+    apt update && apt install -y flex bison libsodium23 libsodium-dev libcurl4-openssl-dev git
+    ```
+
+1. 在软件商店中卸载 nginx。
+
+2. 在软件商店中重新安装 nginx，安装方式选择「编译安装」。
+
+3. 选择「添加自定义模块」，填写好之后点击「提交」
+    * 模块名称：ngx_waf
+    * 模块描述：方便且高性能的 Nginx 防火墙模块 
+    * 模块参数：
+        ```shell
+        --add-module=/www/server/nginx/src/ngx_waf --with-cc-opt='-std=gnu99 -fstack-protector-strong'
+        ```
+    * 前置脚本：
+        ```shell
+        mkdir -p /www/server/nginx/src
+        cd /www/server/nginx/src
+        git clone -b lts https://github.com/ADD-SP/ngx_waf.git
+        cd ngx_waf
+        make
+        git clone https://github.com/libinjection/libinjection.git inc/libinjection
+        cd /www/server/nginx/src
+        git clone https://github.com/troydhanson/uthash.git uthash
+        export LIB_UTHASH=/www/server/nginx/src/uthash
+        
+        # 如果操作系统的 Ubuntu 则不用填写下面的命令
+        export LIB_SODIUM=/usr/local/src/libsodium-build
+        ```
+
+4. 这时你会看到 ngx_waf 已经添加进去了，点击「提交」等待安装完成。
+
+
+::: tip 报错了怎么办？
+
+你可以选择去 Github 提 issue 或者自己解决，编译安装第三方 nginx 模块就要有自己解决问题的就觉悟。
+
+:::
+

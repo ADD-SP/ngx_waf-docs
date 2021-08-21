@@ -32,6 +32,7 @@ module.exports = {
                 editLinkText: "Help us improve this page!",
                 nav: [
                     { text: 'Best Practices', link: '/practice/overview.html' },
+                    { text: 'Cross-version Upgrades', link: '/advance/upgrade.md' },
                     { text: 'CHANGES', link: '/changes/overview.html' }
                 ],
                 sidebar: [
@@ -76,6 +77,7 @@ module.exports = {
                 editLinkText: "帮助我们改善此页面！",
                 nav: [
                     { text: '最佳实践', link: '/zh-cn/practice/overview.html' },
+                    { text: '跨版本升级', link: '/zh-cn/advance/upgrade.md' },
                     { text: '更新日志', link: '/zh-cn/changes/overview.html' }
                 ],
                 sidebar: [
