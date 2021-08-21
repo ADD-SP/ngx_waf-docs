@@ -35,3 +35,5 @@ To upgrade the module, you need to reinstall it according to the instructions in
 
 8. If you use the directive `waf_cache` and use the directive's parameters `interval` or `percent`, remove these two parameters, which have been removed.
 
+9. If you use the directive `waf_priority`, add `VERIFY-BOT` and `CAPTCHA` to it.
+
