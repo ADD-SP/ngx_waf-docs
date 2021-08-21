@@ -54,7 +54,7 @@ If you would like to upgrade to this version, please see the documentation for g
 
 * The syntax of the directive `waf_cache` has been changed, see the cross-version upgrade guide in the documentation.
 
-* Support for modifying the priority of `request_body_check`.
+* Support for modifying the priority of request body inspection.
 
 
 ### Removed
