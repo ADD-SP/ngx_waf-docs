@@ -266,6 +266,8 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 
 4. 这时你会看到 ngx_waf 已经添加进去了，点击「提交」等待安装完成。
 
+5. 安装成功后删除第四步中向文件 `/etc/profile` 中添加的内容。
+
 
 ::: tip 报错了怎么办？
 
