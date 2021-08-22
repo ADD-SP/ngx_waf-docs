@@ -164,7 +164,7 @@ So please set it reasonably according to your actual needs.
 
 ## `waf_captcha` <Badge text="Latest Current version only" type="tip"/>
 
-* syntax: waf_captcha \<*on* | *off*\> \[prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\] \[file=*/full/path*\] \[secret=*your_secret*\] \[score =*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
+* syntax: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\> \<file=*/full/path*\> \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
 * default: waf_captcha off
 * context: http, server, location
 

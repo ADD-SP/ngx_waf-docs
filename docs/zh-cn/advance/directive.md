@@ -162,7 +162,7 @@ waf_mode !UA STD;
 
 ## `waf_captcha` <Badge text="仅限最新的 Current 版本" type="tip"/>
 
-* 配置语法: waf_captcha \<*on* | *off*\> \[prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\] \[file=*/full/path*\] \[secret=*your_secret*\] \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
+* 配置语法: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\> \<file=*/full/path*\> \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
 * 默认配置：waf_captcha off
 * 配置段: http, server, location
 
