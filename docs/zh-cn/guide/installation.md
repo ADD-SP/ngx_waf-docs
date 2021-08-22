@@ -231,9 +231,14 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     export LIB_SODIUM=/usr/local/src/libsodium-build
     ```
 
-5. 清空宝塔面板缓存，重启宝塔面板，重新登录宝塔面板。
+5. 在 shell 中运行下列命令
+    ```nginx
+    source /etc/profile
+    ```
 
-6. 选择「添加自定义模块」，填写好之后点击「提交」
+6. 清空宝塔面板缓存，重启宝塔面板，重新登录宝塔面板。
+
+7. 选择「添加自定义模块」，填写好之后点击「提交」
     * 模块名称：ngx_waf
     * 模块描述：方便且高性能的 Nginx 防火墙模块 
     * 模块参数：
@@ -245,6 +250,8 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
         mkdir -p /www/server/nginx/src
         cd /www/server/nginx/src
         git clone -b lts https://github.com/ADD-SP/ngx_waf.git
+        rm -rf /usr/local/src/ngx_waf
+        cp -r ngx_waf /usr/local/src/ngx_waf
         cd ngx_waf
         make
         git clone https://github.com/libinjection/libinjection.git inc/libinjection
@@ -256,6 +263,8 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
         mkdir -p /www/server/nginx/src
         cd /www/server/nginx/src
         git clone -b current https://github.com/ADD-SP/ngx_waf.git
+        rm -rf /usr/local/src/ngx_waf
+        cp -r ngx_waf /usr/local/src/ngx_waf
         cd ngx_waf
         make
         git clone https://github.com/libinjection/libinjection.git lib/libinjection
@@ -264,9 +273,9 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
         git clone https://github.com/troydhanson/uthash.git uthash
         ```
 
-4. 这时你会看到 ngx_waf 已经添加进去了，点击「提交」等待安装完成。
+8. 这时你会看到 ngx_waf 已经添加进去了，点击「提交」等待安装完成。
 
-5. 安装成功后删除第四步中向文件 `/etc/profile` 中添加的内容。
+9. 安装成功后删除第四步中向文件 `/etc/profile` 中添加的内容。
 
 
 ::: tip 报错了怎么办？
