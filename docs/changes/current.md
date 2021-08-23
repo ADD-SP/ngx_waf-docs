@@ -31,6 +31,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [8.0.1] - 2021-08-23 UTC+0800
+
+### Added
+
+* No longer generates additional response headers when CC protection returns the status code 444.
+
+### Fixed
+
+* Segmentation fault when `User-Agent` is empty.
+
+* The directive `waf_http_status` could not be merged correctly.
+
+***
+
 ## [8.0.0] - 2021-08-21 UTC+0800
 
 ### **NOTE**
