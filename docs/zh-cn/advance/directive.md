@@ -121,7 +121,7 @@ waf_mode !UA STD;
 
 ***
 
-* `CAPTCHA`：当请求频率超出设定值时会使用验证码进行验证，如果连续三次验证失败则拉黑 IP，反之重新计算请求频率。
+* `CAPTCHA`：当请求频率超出设定值时会使用验证码进行验证，如果连续三次验证失败则拉黑 IP，反之重新计算请求频率。你可以参考[开启验证码 | 最佳实践](/zh-cn/practice/enable-captcha.md)中的用例。
 当你启用了此选项时，你必须设置 [waf_captcha](#waf-captcha) 的 `prov`、`file` 和 `secret` 这三个参数。
 * `rate`：表示一段时间内的请求次数的上限，如 `500r/s`、`500r/60s`、`500r/m`、`500r/60m`、`500r/h`、`500r/60h` 和 `500r/d`。超出限制后会返回 [503 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503)，并附带 [Retry-After](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After) 响应头。
 
@@ -178,6 +178,9 @@ waf_mode !UA STD;
     * 如果 `prov=reCAPTCHAv2`，则默认值为 `https://www.recaptcha.net/recaptcha/api/siteverify`。
     * 如果 `prov=reCAPTCHAv3`，则默认值为 `https://www.recaptcha.net/recaptcha/api/siteverify`。
 * `verify`：验证码向后端提交 token 所用的 url，默认为 `/captcha`。
+
+
+你可以参考[开启验证码 | 最佳实践](/zh-cn/practice/enable-captcha.md)中的用例。
 
 
 ::: tip 填写你的 Sitekey
