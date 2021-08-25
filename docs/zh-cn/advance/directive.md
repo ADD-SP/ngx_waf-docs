@@ -225,7 +225,11 @@ waf_mode !UA STD;
 如果您的站点正在受到攻击可以尝试使用此配置。
 开启后每个用户首次访问会强制延迟五秒，并自动跳转到 `uri` 所指向的网页。
 
+如果攻击者采用攻击方式不能完美支持 Cookie，本功能可以大幅度缓解此类攻击造成的影响。
+
 * `uri`: 可以是一个完整的网址，也可以是一个路径。比如 `https://example.com/attack.html` 或 `/attack.html`。
+
+你可以参考[抵御分布式 CC 攻击（HTTP 洪水） | 最佳实践](/zh-cn/practice/protect-against-distributed-http-flood.md)中的用例。
 
 ::: tip 小技巧
 

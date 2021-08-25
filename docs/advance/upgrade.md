@@ -5,7 +5,7 @@ lang: en
 
 # Cross-version Upgrades
 
-To upgrade the module, you need to reinstall it according to the instructions in [installation guide](/zh-cn/guide/installation.md).
+To upgrade the module, you need to reinstall it according to the instructions in [installation guide](/guide/installation.md).
 
 ## Upgrade from `5.x.x` to `6.x.x`
 

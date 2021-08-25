@@ -119,8 +119,8 @@ Set the parameters related to CC protection.
 
 ***
 
-* `CAPTCHA`. When the request rate exceeds the set value, use CAPTCHA authentication to disable the IP if it fails three times in a row, and vice versa to recalculate the request frequency. When you enable this option, you must set the parameters `prov`, `file` and `secret` of the directive [waf_captcha](#waf-captcha). You can refer to the use case in [Enable Captcha | Best Practices](/zh-cn/practice/enable-captcha.md).
-* `rate`: indicates the upper rate of requests, such as `500r/s`, `500r/60s`, `500r/m`, `500r/60m`, `500r/h`, `500r/60h` and `500r/d`. Exceeding the limit returns a [503 status code](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503) with a [after retry](https://developer.mozilla.org/zh-) CN/ docs/Web/HTTP/Headers/Retry-After) response header.
+* `CAPTCHA`. When the request rate exceeds the set value, use CAPTCHA authentication to disable the IP if it fails three times in a row, and vice versa to recalculate the request frequency. When you enable this option, you must set the parameters `prov`, `file` and `secret` of the directive [waf_captcha](#waf-captcha). You can refer to the use case in [Enable Captcha | Best Practices](/practice/enable-captcha.md).
+* `rate`: indicates the upper rate of requests, such as `500r/s`, `500r/60s`, `500r/m`, `500r/60m`, `500r/h`, `500r/60h` and `500r/d`. Exceeding the limit returns a [503 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) with a [after retry](https://developer.mozilla.org/zh-) CN/ docs/Web/HTTP/Headers/Retry-After) response header.
 
 :::
 
@@ -181,7 +181,7 @@ Use CAPTCHA for human identification of the client.
     * If `prov=reCAPTCHAv3`, the default value is `https://www.recaptcha.net/recaptcha/api/siteverify`.
 * `verify`: the url used by the captcha to submit the token to the backend, defaults to `/captcha`.
 
-You can refer to the use case in [Enable Captcha | Best Practices](/zh-cn/practice/enable-captcha.md).
+You can refer to the use case in [Enable Captcha | Best Practices](/practice/enable-captcha.md).
 
 :::tip Fill in your Sitekey
 
@@ -226,6 +226,8 @@ If your site is under attack you can try using this directive.
 Turning it on forces a five-second delay on each user's first visit and automatically jumps to the page pointed to by `uri`.
 
 * `uri`: can be a full URL or a path. For example, `https://example.com/attack.html` or `/attack.html`.
+
+You can refer to the use case in [protect against distributed CC Attacks (distributed HTTP flooding) | Best Practices](/practice/protect-against-distributed-http-flood.md).
 
 ::: tip Tips
 
