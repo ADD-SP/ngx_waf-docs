@@ -31,6 +31,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [8.0.2] - 2021-08-27 UTC+0800
+
+### Fixed
+
+* nginx crashes(segmentation fault) after enabling CAPTCHA because the directive `waf_captcha` was not properly merged with different contexts.
+
+* CAPTCHA page cannot be displayed because the directive `waf_captcha` was not properly merged with different contexts.
+
+* If the directive `proxy_pass` is used, neither Under-Attack-Mode nor CAPTCHA will work properly.
+
+***
+
 ## [8.0.1] - 2021-08-23 UTC+0800
 
 ### Added
