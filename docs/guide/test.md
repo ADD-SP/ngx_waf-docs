@@ -7,7 +7,11 @@ lang: en
 
 ## Quick Test
 
-Visit `/www.bak` and if a 403 status code is returned, the module is successfully started.
+Run the following command, if the output is 403 then the module is working properly.
+
+```shell
+curl -I -o /dev/null --user-agent bench -s -w "%{http_code}\\n" https://example.com/
+```
 
 ## Performance Test
 
