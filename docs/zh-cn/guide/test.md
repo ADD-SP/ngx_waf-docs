@@ -7,7 +7,11 @@ lang: zh-CN
 
 ## 简单测试
 
-访问 `/www.bak`，如果返回 403 状态码则表示模块成功启动。
+运行下列命令，如果输出 403 则表示模块正常工作。
+
+```shell
+curl -I -o /dev/null --user-agent bench -s -w "%{http_code}\\n" https://example.com/
+```
 
 ## 性能测试
 
