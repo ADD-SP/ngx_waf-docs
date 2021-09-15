@@ -110,7 +110,14 @@ waf_mode !UA STD;
 
 * `rate`：表示一段时间内的请求次数的上限，如 `500r/m`。超出限制后会返回 [503 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503)，并附带 [Retry-After](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After) 响应头。
 * `duration`：表示超出第一个参数 `rate` 的限制后拉黑 IP 的时间，如 `60s`、`60m`、`60h` 和 `60d`，如不指定则默认为 `1h`。
-* `size`：用于设置记录 IP 访问次数的内存的大小，如 `20m`、`2048k`，不得小于 `20m`，如不指定则默认为 `20m`。当这段内存耗尽的时候程序会自动重置这块内存以重新统计 IP 的访问次数。
+* `size`：用于设置记录 IP 访问次数的内存的大小，如 `20m`、`2048k`，不得小于 `20m`，如不指定则默认为 `20m`。当这段内存耗尽的时候程序会按照 LRU 策略清理一部分访问记录。
+
+
+::: tip 估算所需的内存大小
+
+经过估计，1M 的内存至少可以记录 4096 个 IP。
+
+:::
 
 
 ::: tip 最新的 Current 版本中的变化

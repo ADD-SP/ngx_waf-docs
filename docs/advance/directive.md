@@ -108,7 +108,14 @@ Set the parameters related to CC protection.
 
 * `rate`: Indicates the upper limit of the number of requests over a period of time, such as `500r/m`. Exceeding the limit returns a [503 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) with a [Retry-After](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After) response header.
 * `duration`: Indicates the time to block IP after exceeding the limit of the first parameter `rate`, such as `60s`, `60m`, `60h` and `60d`, if not specified, the default is `1h`.
-* `size`: Used to set the size of the memory for recording IP accesses, such as `20m`, `2048k`, must not be less than `20m`, if not specified, the default is `20m`. When this memory is exhausted, the program will automatically reset this memory to recount the IP accesses.
+* `size`: Used to set the size of the memory for recording IP accesses, such as `20m`, `2048k`, must not be less than `20m`, if not specified, the default is `20m`. When this memory is exhausted, the program will clean up some of the records according to the LRU policy.
+
+
+::: tip TIP
+
+1MB of memory can record at least 4096 IP.
+
+:::
 
 
 ::: tip CHANGES IN LATEST 'Current' VERSION

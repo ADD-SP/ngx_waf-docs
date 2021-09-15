@@ -221,9 +221,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 
 2. 在软件商店中卸载 nginx。
 
-3. 在软件商店中重新安装 nginx，安装方式选择「编译安装」。
-
-4. 编辑文件 `/etc/profile`，在末尾追加两行。
+3. 编辑文件 `/etc/profile`，在末尾追加两行。
     ```
     export LIB_UTHASH=/www/server/nginx/src/uthash
 
@@ -231,12 +229,14 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     export LIB_SODIUM=/usr/local/src/libsodium-build
     ```
 
-5. 在 shell 中运行下列命令
+4. 在 shell 中运行下列命令
     ```nginx
     source /etc/profile
     ```
 
-6. 清空宝塔面板缓存，重启宝塔面板，重新登录宝塔面板。
+5. 清空宝塔面板缓存，重启宝塔面板，重新登录宝塔面板。
+
+6. 在软件商店中重新安装 nginx，安装方式选择「编译安装」。
 
 7. 选择「添加自定义模块」，填写好之后点击「提交」
     * 模块名称：ngx_waf
