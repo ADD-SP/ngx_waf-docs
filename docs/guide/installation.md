@@ -62,8 +62,6 @@ Then download the source code of this module, the following will use the stable 
 ```sh
 cd /usr/local/src
 git clone -b lts https://github.com/ADD-SP/ngx_waf.git
-cd ngx_waf
-git clone https://github.com/libinjection/libinjection.git inc/libinjection
 ```
 
 Next you should run the configuration script.
