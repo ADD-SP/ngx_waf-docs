@@ -11,14 +11,14 @@ lang: zh-CN
 
 * 基础防护：如 IP 或 IP 网段的黑白名单、URI 黑白名单和请求体黑名单等。
 * 使用简单：配置文件和规则文件书写简单，可读性强。
-* 高性能：高效的算法和缓存。
-* 高级防护：兼容 ModSecurity 的规则，你可以使用 OWASP 的核心规则库。此功能仅限最新的 Current 版本。
-* 友好爬虫验证：支持验证 Google、Bing、Baidu 和 Yandex 的爬虫并自动放行，避免错误拦截。此功能仅限最新的 Current 版本。
-* 验证码：支持三种验证码：hCaptcha、reCAPTCHAv2 和 reCAPTCHAv3。此功能仅限最新的 Current 版本。
+* 高性能：使用高效的 IP 检查算法和缓存机制。
+* 高级防护：兼容 [ModSecurity](https://github.com/SpiderLabs/ModSecurity)，因此你可以使用[开放式网络应用安全项目（OWASP）® 的核心规则库](https://owasp.org/www-project-modsecurity-core-rule-set/)。
+* 友好爬虫验证：支持验证 Google、Bing、Baidu 和 Yandex 的爬虫并自动放行，避免错误拦截。
+* 验证码：支持三种验证码：hCaptcha、reCAPTCHAv2 和 reCAPTCHAv3。
 
 ## 功能
 
-* 兼容 [ModSecurity](https://github.com/SpiderLabs/ModSecurity) 的规则。此功能仅限最新的 Current 版本。
+* 兼容 [ModSecurity](https://github.com/SpiderLabs/ModSecurity)。此功能仅限最新的 Current 版本。
 * SQL 注入防护（Powered By [libinjection](https://github.com/libinjection/libinjection)）。
 * XSS 攻击防护（Powered By [libinjection](https://github.com/libinjection/libinjection)）。
 * 支持 IPV4 和 IPV6。

@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [9.0.0] - 2021-09-23 UTC+0800
 
+### **NOTE**
+
+If you would like to upgrade to this version, please see the documentation for guidelines on upgrading across versions.
+
 ### Added
 
 * Compatible with [ModSecurity](https://github.com/SpiderLabs/ModSecurity).
