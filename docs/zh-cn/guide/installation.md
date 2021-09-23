@@ -65,8 +65,6 @@ tar -zxf nginx-1.20.1.tar.gz
 ```sh
 cd /usr/local/src
 git clone -b lts https://github.com/ADD-SP/ngx_waf.git
-cd ngx_waf
-git clone https://github.com/libinjection/libinjection.git inc/libinjection
 ```
 
 接下来应该运行配置脚本。
@@ -209,24 +207,53 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     # Centos7
     yum update && yum install -y flex bison libcurl libcurl-devel git
     cd /usr/local/src
-    git clone https://github.com/jedisct1/libsodium.git --branch stable libsodium-src
-    cd libsodium-src
-    ./configure --prefix=/usr/local/src/libsodium-build --with-pic
+    git clone https://github.com/jedisct1/libsodium.git --branch stable
+    cd libsodium
+    ./configure --prefix=/usr/local/libsodium --with-pic
+    make -j$(nproc)
+    make install
+    # 如果你使用 Current 版本请添加这些代码
+    # 安装 libmaxminddb
+    cd /usr/local/src
+    wget https://github.com/maxmind/libmaxminddb/releases/download/1.6.0/libmaxminddb-1.6.0.tar.gz -O libmaxminddb.tar.gz
+    mkdir libmaxminddb
+    tar -zxf "libmaxminddb.tar.gz" -C libmaxminddb --strip-components=1
+    cd libmaxminddb
+    ./configure --prefix=/usr/local/libmaxminddb
+    make -j$(nproc)
+    make install
+    # 安装 ModSecurity v3
+    git clone -b v3.0.5 https://github.com/SpiderLabs/ModSecurity.git
+    cd ModSecurity
+    chmod +x build.sh
+    ./build.sh
+    git submodule init
+    git submodule update
+    ./configure --prefix=/usr/local/modsecurity --with-maxmind=/usr/local/libmaxminddb
     make -j$(nproc)
     make install
 
+    # ======== 分割线 ========
+
     # Ubuntu
-    apt update && apt install -y flex bison libsodium23 libsodium-dev libcurl4-openssl-dev git
+    apt update
+    apt install -y ibsodium23   \
+        libsodium-dev           \
+        libcurl4-openssl-dev    \
+        git                     \
+        libmodsecurity-dev      \
+        libmodsecurity3
     ```
 
 2. 在软件商店中卸载 nginx。
 
 3. 编辑文件 `/etc/profile`，在末尾追加两行。
-    ```
+    ```shell
     export LIB_UTHASH=/www/server/nginx/src/uthash
 
-    # 如果操作系统的 Ubuntu 则不用写下面这行
-    export LIB_SODIUM=/usr/local/src/libsodium-build
+    # 如果操作系统的 Ubuntu 则不用写下面这两行
+    export LIB_SODIUM=/usr/local/libsodium
+    export LIB_MODSECURITY=/usr/local/modsecurity
     ```
 
 4. 在 shell 中运行下列命令
@@ -266,14 +293,13 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
         rm -rf /usr/local/src/ngx_waf
         cp -r ngx_waf /usr/local/src/ngx_waf
         cd ngx_waf
-        make
-        git clone https://github.com/libinjection/libinjection.git lib/libinjection
-        git clone https://github.com/DaveGamble/cJSON.git lib/cjson
+        git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson
+        git clone -b v2.3.0 https://github.com/troydhanson/uthash.git uthash
         cd /www/server/nginx/src
-        git clone https://github.com/troydhanson/uthash.git uthash
+        
         ```
 
-8. 这时你会看到 ngx_waf 已经添加进去了，点击「提交」等待安装完成。
+8. 这时你会看到 ngx_waf 已经添加进去了，在模块列表中打上勾之后点击「提交」等待安装完成。
 
 9. 安装成功后删除第四步中向文件 `/etc/profile` 中添加的内容。
 
@@ -284,3 +310,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 
 :::
 
+
+## 军哥 LNMP
+
+参考 [ngx_waf：一款高大全的 Nginx 网站防火墙模块 - 喵斯基部落](https://www.moewah.com/archives/4880.html)。

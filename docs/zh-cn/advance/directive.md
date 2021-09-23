@@ -93,9 +93,13 @@ waf_mode !UA STD;
 
 参数 `CC` 和 `CACHE` 被删除。
 
-* STD：标准工作模式，等价于 `HEAD GET POST IP URL RBODY ARGS UA LIB-INJECTION-SQLI`。
+* STD：标准工作模式，等价于 `HEAD GET POST IP URL RBODY ARGS UA`。
 * STATIC：适用于静态站点的工作模式，等价于 `HEAD GET IP URL UA`。
-* DYNAMIC：适用于动态站点的工作模式，等价于 `HEAD GET POST IP URL ARGS UA RBODY COOKIE LIB-INJECTION-SQLI`。
+* DYNAMIC：适用于动态站点的工作模式，等价于 `HEAD GET POST IP URL ARGS UA RBODY COOKIE`。
+* LIBINJECTION：已移除。
+* LIBINJECTION-SQLI：已移除。
+* LIBINJECTION-XSS：已移除。
+* ADV：已移除。
 
 :::
 
@@ -165,6 +169,49 @@ waf_mode !UA STD;
 * 配置段: server, location
 
 :::
+
+
+## `waf_modsecurity` <Badge text="仅限最新的 Current 版本" type="tip"/>
+
+* 配置语法: waf_modsecurity \<*on* | *off*\> \<file=*/path/to/modsecuriy/rules.conf\*> \<remote_key=*key*\> \<remote_url=*url*\>
+* 默认配置：waf_modsecurity off
+* 配置段: http, server, location
+
+使用 ModSecurity 的规则。
+
+* `file`：规则文件的绝对路径。
+* `remote_key`：用于读取远程规则文件的密钥。
+* `remote_url`：用于读取远程文件的 URL。
+
+你可以参考 [开启 ModSecurity | 最佳实践](/zh-cn/practice/enable-modsecurity) 中的用法。
+
+::: tip 注意
+
+* 如果你使用了参数 `remote_key`，你必须同时使用参数 `remote_url`。
+* 如果你同时使用了参数 `file`、`remote_key` 和 `remote_url`，那么两份规则都会被加载。
+
+:::
+
+## `waf_modsecurity_transaction_id` <Badge text="仅限最新的 Current 版本" type="tip"/>
+
+* 配置语法: waf_modsecurity_transaction_id \<*string*\>
+* 默认配置：waf_modsecurity off
+* 配置段: http, server, location
+
+指定 ModSecurity 的事务 ID。你可以在此处使用常量字符串和变量，下面是一个例子。
+
+```nginx
+server {
+    location /file/ {
+        waf_modsecurity_transaction_id "$host-file";
+    }
+
+    location /api/ {
+        waf_modsecurity_transaction_id "$host-api";
+    }
+}
+```
+
 
 
 ## `waf_captcha` <Badge text="仅限最新的 Current 版本" type="tip"/>
@@ -292,12 +339,15 @@ waf_mode !UA STD;
 
 ::: tip 最新的 Current 版本中的变化
 
-* 默认配置：waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE ADV"
+* 默认配置：waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE POST MODSECURITY"
 
 ***
 
 * `VERIFY-BOT`：友好爬虫验证。
 * `CAPTCHA`：验证码。
+* `POST`：请求体黑名单。
+* `ADV`：已经移除。
+* `MODSECURITY`。
 
 :::
 

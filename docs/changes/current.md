@@ -31,6 +31,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [9.0.0] - 2021-09-23 UTC+0800
+
+### Added
+
+* Compatible with [ModSecurity](https://github.com/SpiderLabs/ModSecurity).
+
+* Added two directives: `waf_modsecurity` and `waf_modsecurity_transaction_id`.
+
+* Added parameter `MODSECURITY` to directive `waf_priority`.
+
+### Removed
+
+* Removed some parameters for directive `waf_mode`: `LIBINJECTION`, `LIBINJECTION-SQLI`, `LIBINJECTION-XSS` and `ADV`.
+
+* Removed the parameter `ADV` from the directive `waf_priority`.
+
+* Removed dependency [libinjection](https://github.com/libinjection/libinjection).
+
+### Fixes
+
+* No longer returns a 404 status code when the captcha succeeds, but a 204 status code instead.
+
+* Sometimes a complete inspection of the request body is not performed.
+
+***
+
 ## [8.0.3] - 2021-08-27 UTC+0800
 
 ### Fixed

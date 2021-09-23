@@ -92,9 +92,13 @@ The mode of `CC` is independent of other modes, and whether it takes effect or n
 
 The parameters `CC` and `CACHE` are removed.
 
-* STD: Standard working mode, equivalent to `HEAD GET POST IP URL RBODY ARGS UA LIB-INJECTION-SQLI`.
+* STD: Standard working mode, equivalent to `HEAD GET POST IP URL RBODY ARGS UA`.
 * STATIC: working mode for static sites, equivalent to `HEAD GET IP URL UA`.
-* DYNAMIC: working mode for dynamic sites, equivalent to `HEAD GET POST IP URL ARGS UA RBODY COOKIE LIB-INJECTION-SQLI`.
+* DYNAMIC: working mode for dynamic sites, equivalent to `HEAD GET POST IP URL ARGS UA RBODY COOKIE`.
+* LIB-INJECTION: Removed.
+* LIB-INJECTION-SQLI: Removed.
+* LIB-INJECTION-XSS: Removed.
+* ADV: Removed.
 
 :::
 
@@ -167,6 +171,48 @@ So please set it reasonably according to your actual needs.
 * context: server, location
 
 :::
+
+
+## `waf_modsecurity` <Badge text="Latest Current version only" type="tip"/>
+
+* syntax: waf_modsecurity \<*on* | *off*\> \<file=*/path/to/modsecuriy/rules.conf\*> \<remote_key=*key*\> \<remote_url=*url*\>
+* default: waf_modsecurity off
+* context: http, server, location
+
+Use ModSecurity's rules.
+
+* `file`: absolute path to the rule file.
+* `remote_key`: key for reading remote rule file.
+* `remote_url`: URL to read the remote file.
+
+You can refer to the use case in [Enable ModSecurity | Best Practices](/practice/enable-modsecurity.md).
+
+::: tip Note
+
+* If you use the parameter `remote_key`, you must also use the parameter `remote_url`.
+* If you use the parameters `file`, `remote_key` and `remote_url` at the same time, then both rules will be loaded.
+
+:::
+
+## `waf_modsecurity_transaction_id` <Badge text="Latest Current version only" type="tip"/>
+
+* Configuration syntax: waf_modsecurity_transaction_id \<*string*\>
+* Default configuration: waf_modsecurity off
+* Configuration segments: http, server, location
+
+Specify the transaction ID for ModSecurity. you can use constant strings and variables here, here is an example.
+
+```nginx
+server {
+    location /file/ {
+        waf_modsecurity_transaction_id "$host-file";
+    }
+
+    location /api/ {
+        waf_modsecurity_transaction_id "$host-api";
+    }
+}
+```
 
 
 ## `waf_captcha` <Badge text="Latest Current version only" type="tip"/>
@@ -290,13 +336,15 @@ Set the priority of each inspection process, except for POST detection, which al
 
 ::: tip CHANGES IN LATEST 'Current' VERSION
 
-* default: waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE ADV POST"
+* default: waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE POST MODSECURITY"
 
 ***
 
 * `VERIFY-BOT`: friendly crawler verification.
 * `CAPTCHA`: Captcha.
-* `POST`：Request body blacklist.
+* `POST`: Request body blacklist.
+* `ModSecurity`.
+* `ADV`: Removed.
 
 :::
 

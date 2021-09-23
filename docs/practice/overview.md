@@ -11,3 +11,4 @@ Because of the complexity of the module's directives, we have listed some common
 * [Enable CAPTCHA](enable-captcha.md)
 * [Reduce bandwidth usage when attacked](reduce-bandwidth-usage-when-attacked.md)
 * [Protect against distributed CC Attacks (distributed HTTP flooding)](protect-against-distributed-http-flood.md)
+* [Enable ModSecurity](enable-modsecurity.md)

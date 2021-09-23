@@ -9,13 +9,16 @@ Handy, High performance Nginx firewall module.
 
 ## Why ngx_waf
 
-* Full-featured: The basic functions of the web application firewall are available.
-* Easy to use: directives are easy to understand and you can probably guess what they mean without reading the documentation.
-* Flexible rules: Provide advanced rules that combine actions (such as block or allow) with multiple conditional expressions
-* High performance: In more extreme tests, QPS (Queries Per Second) is reduced by about 4% after starting this module. See the documentation for details of the tests.
+* Basic protection: such as black and white list of IPs or IP range, uri black and white list, and request body black list, etc.
+* Easy to use: configuration files and rule files are easy to write and readable.
+* High performance: Efficient algorithms and caching.
+* Advanced protection: Compatible with ModSecurity's rules, you can use OWASP ModSecurity Core Rule Set.
+* Friendly crawler verification: Supports verifying Google, Bing, Baidu and Yandex crawlers and allowing them automatically to avoid false positives.
+* Captcha: Supports three kinds of captchas: hCaptcha, reCAPTCHAv2 and reCAPTCHAv3.
 
 ## Features
 
+* Rules that are compatible with [ModSecurity](https://github.com/SpiderLabs/ModSecurity).
 * Anti SQL injection (powered by [libinjection](https://github.com/libinjection/libinjection)).
 * Anti XSS (powered by [libinjection](https://github.com/libinjection/libinjection)).
 * IPV4 and IPV6 support.
@@ -23,7 +26,7 @@ Handy, High performance Nginx firewall module.
 * Support authentication-friendly crawlers (based on user agent and IP identification) to avoid blocking of these crawlers (e.g. GoogleBot).
 * CC protection, if the request rate exceeds the limit, the IP will be automatically banned for a period of time, or use CAPTCHA to do human identification and allow it if successful..
 * Exceptional allow on specific IP address.
-* Block the specified IP address.
+* Block the specified IP or IP range.
 * Block the specified request body.
 * Exceptional allow on specific URL.
 * Block the specified URL.
@@ -32,7 +35,6 @@ Handy, High performance Nginx firewall module.
 * Block the specified Cookie.
 * Exceptional allow on specific Referer.
 * Block the specified Referer.
-* Advanced rules that combine actions (such as block or allow) with multiple conditional expressions.
 
 
 ## Contact

@@ -32,6 +32,36 @@ lang: zh-CN
 
 ***
 
+## [9.0.0] - 2021-09-23 UTC+0800
+
+### **注意**
+
+如果您想要升级到此版本，请查看文档中的跨版本升级的指南。
+
+### 新增
+
+* 兼容了[ModSecurity](https://github.com/SpiderLabs/ModSecurity) 的规则。
+
+* 增加了两个指令：`waf_modsecurity` 和 `waf_modsecurity_transaction_id`。
+
+* 为指令 `waf_priority` 增加了参数 `MODSECURITY`。
+
+### 移除
+
+* 删除了指令 `waf_mode` 的一些参数：`LIBINJECTION`、`LIBINJECTION-SQLI`、`LIBINJECTION-XSS` 和 `ADV`。
+
+* 删除了指令 `waf_priority` 的参数 `ADV`。
+
+* 删除了依赖 [libinjection](https://github.com/libinjection/libinjection)。
+
+### 修复
+
+* 当验证码通过时不再返回 404 状态码，而是返回 204 状态码。
+
+* 有时不会完整地检查请求体。
+
+***
+
 ## [8.0.3] - 2021-08-27 UTC+0800
 
 ### 修复
