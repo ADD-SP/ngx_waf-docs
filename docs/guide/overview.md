@@ -43,12 +43,17 @@ Handy, High performance Nginx firewall module.
 * Telegram Group (English): [https://t.me/group_ngx_waf](https://t.me/group_ngx_waf)
 * Telegram Group (Chinese): [https://t.me/group_ngx_waf_cn](https://t.me/group_ngx_waf_cn)
 
+## Sponsor
+
+Hope you can help promote this project. The more stars got, the better this project is. :)
+
 ## Performance Test
 
 [Performance Test](test.md#performance-test)
 
 ## Thanks
 
+* [ModSecurity](https://github.com/SpiderLabs/ModSecurity): An open source, cross platform web application firewall (WAF) engine.
 * [uthash](https://github.com/troydhanson/uthash): C macros for hash tables and more.
 * [libinjection](https://github.com/libinjection/libinjection): SQL / SQLI tokenizer parser analyzer.
 * [libsodium](https://github.com/jedisct1/libsodium): A modern, portable, easy to use crypto library.

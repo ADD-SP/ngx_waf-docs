@@ -39,6 +39,12 @@ lang: zh-CN
 * Telegram 群组（英文）: [https://t.me/group_ngx_waf](https://t.me/group_ngx_waf)
 * Telegram 群主（中文）：[https://t.me/group_ngx_waf_cn](https://t.me/group_ngx_waf_cn)
 
+## 打赏
+
+打赏就算了，如果您愿意，您可以帮助宣传一下本项目。比如发个贴，推荐给身边有需求的人什么的。
+
+<del>我从来没碰过钱，我对钱没有兴趣。</del>
+
 ## 性能测试
 
 [性能测试](test.md#性能测试)
