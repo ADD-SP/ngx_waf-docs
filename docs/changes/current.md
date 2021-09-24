@@ -31,6 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [9.0.1] - 2021-09-24 UTC+0800
+
+### Fixed
+
+* Failed to load rules of ModSecurity.
+
+***
+
 ## [9.0.0] - 2021-09-23 UTC+0800
 
 ### **NOTE**
