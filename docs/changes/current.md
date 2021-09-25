@@ -31,6 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [9.0.2] - 2021-09-25 UTC+0800
+
+### Fixed
+
+* Sometimes the value of the built-in variable `$waf_blocking_log` is wrong.
+
+***
+
 ## [9.0.1] - 2021-09-24 UTC+0800
 
 ### Fixed
