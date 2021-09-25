@@ -21,7 +21,7 @@ location /dynamic/ {
 }
 ```
 
-## For 'Cureent' version
+## For 'Current' version
 
 ```nginx
 # Limit the request rate for static resources to 10,000 requests per minute.
