@@ -195,7 +195,7 @@ waf_mode !UA STD;
 
 ::: danger 内存泄露 
 
-**内存泄露会导致系统的可用内存越老越少，性能逐渐降低直到程序或系统崩溃。**
+**内存泄露会导致系统的可用内存越来越少，性能逐渐降低直到程序或系统崩溃。**
 
 当前 [ModSecurity](https://github.com/SpiderLabs/ModSecurity) 的最新版 v3.0.5 存在内存泄露的 bug。
 
