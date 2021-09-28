@@ -35,7 +35,7 @@ cat /path/to/error.log | grep ngx_waf:
 cat /path/to/error.log | grep ngx_waf_debug:
 ```
 
-下面是一段典型的调式日志，指示了一次 CC 防御检测的流程。
+下面是一段典型的调式日志，表示了一次 CC 防御检测的流程。
 
 ```
 2021/02/21 20:35:33 [debug] 6666#0: *1 ngx_waf_debug: Start the CC inspection process.
@@ -47,6 +47,14 @@ cat /path/to/error.log | grep ngx_waf_debug:
 2021/02/21 20:35:33 [debug] 6666#0: *1 ngx_waf_debug: Detection is over.
 2021/02/21 20:35:33 [debug] 6666#0: *1 ngx_waf_debug: The CC detection process is fully completed.
 ```
+
+::: danger 敏感信息泄露
+
+在最新的 `Current` 版本中，调试日志可能会包含一些敏感信息，比如服务器接收和发送的数据，验证码的密钥等。
+提供调试日志时建议通过邮箱发送给我们。你可以在[这里](https://github.com/ADD-SP)找到我们的邮箱。
+
+:::
+
 
 ## 自定义日志格式
 

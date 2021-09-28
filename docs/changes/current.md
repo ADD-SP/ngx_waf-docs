@@ -31,6 +31,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [9.0.3] - 2021-09-28 UTC+0800
+
+### Changed
+
+* More debug logs.
+
+### Fixed
+
+* Failed to display the CAPTCHA page.
+
+***
+
 ## [9.0.2] - 2021-09-25 UTC+0800
 
 ### Fixed

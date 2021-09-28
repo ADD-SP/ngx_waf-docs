@@ -50,6 +50,13 @@ Below is a typical modulation log that illustrates the flow of a CC defense dete
 2021/02/21 20:35:33 [debug] 6666#0: *1 ngx_waf_debug: The CC detection process is fully completed.
 ```
 
+::: danger SENSITIVE INFORMATION DISCLOSURE
+
+In the latest `Current` version, debug logs may contain some sensitive information, such as data received and sent by the server, CAPTCHA keys, etc.
+When providing debug logs it is recommended to send them to us via email. You can find our email address [here](https://github.com/ADD-SP).
+
+:::
+
 ## Customised Log Format
 
 nginx allows custom log formats, and a server block can write to multiple log files at the same time, 
