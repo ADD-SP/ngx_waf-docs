@@ -183,12 +183,42 @@ waf_mode !UA STD;
 * `remote_key`：用于读取远程规则文件的密钥。
 * `remote_url`：用于读取远程文件的 URL。
 
-你可以参考 [开启 ModSecurity | 最佳实践](/zh-cn/practice/enable-modsecurity) 中的用法。
+你可以参考 [开启 ModSecurity | 最佳实践](/zh-cn/practice/enable-modsecurity.md) 中的用法。
 
 ::: tip 注意
 
 * 如果你使用了参数 `remote_key`，你必须同时使用参数 `remote_url`。
 * 如果你同时使用了参数 `file`、`remote_key` 和 `remote_url`，那么两份规则都会被加载。
+
+:::
+
+
+::: danger 内存泄露 
+
+**内存泄露会导致系统的可用内存越老越少，性能逐渐降低直到程序或系统崩溃。**
+
+当前 [ModSecurity](https://github.com/SpiderLabs/ModSecurity) 的最新版 v3.0.5 存在内存泄露的 bug。
+
+* [ngin reload memory leak · Issue #2552 · SpiderLabs/ModSecurity](https://github.com/SpiderLabs/ModSecurity/issues/2552)
+* [It often leads memory leak on nginx reload · Issue #2502 · SpiderLabs/ModSecurity](https://github.com/SpiderLabs/ModSecurity/issues/2502)
+
+如果您开启了 ModSecurity，重载 nginx 时会出现内存泄露，长此以往可能会造成严重的后果。
+
+我们强烈建议您避免使用类似下面的命令。
+
+```shell
+nginx -s reload
+systemctl restart nginx
+service nginx restart
+```
+
+当您需要重载 nginx 时，强烈建议先关闭 nginx，然后启动 nginx。
+
+```shell
+nginx -s stop && nginx
+systemctl stop nginx && systemctl start nginx
+service nginx stop && serivce nginx start
+```
 
 :::
 

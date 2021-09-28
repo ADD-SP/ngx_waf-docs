@@ -194,6 +194,38 @@ You can refer to the use case in [Enable ModSecurity | Best Practices](/practice
 
 :::
 
+::: danger MEMORY LEAKS
+
+**Memory leaks can cause the system to have less and less memory available, degrade performance, and possibly cause programs or systems to crash.**
+
+The latest version v3.0.5 of [ModSecurity](https://github.com/SpiderLabs/ModSecurity) has a memory leak bug.
+
+* [ngin reload memory leak - Issue #2552 - SpiderLabs/ModSecurity](https://github.com/SpiderLabs/ModSecurity/issues/2552)
+* [It often leads memory leak on nginx reload - Issue #2502 - SpiderLabs/ModSecurity](https://github.com/SpiderLabs/ModSecurity/issues/2502)
+
+If you have ModSecurity enabled, memory leaks can occur when reloading nginx, which can have serious consequences in the long run.
+
+We strongly recommend that you avoid using commands like the following.
+
+```shell
+nginx -s reload
+systemctl restart nginx
+service nginx restart
+```
+
+When you need to reload nginx, it is highly recommended to shut down nginx first and then start nginx.
+
+```shell
+nginx -s stop && nginx
+systemctl stop nginx && systemctl start nginx
+service nginx stop && serivce nginx start
+```
+
+:::
+
+
+Translated with www.DeepL.com/Translator (free version)
+
 ## `waf_modsecurity_transaction_id` <Badge text="Latest Current version only" type="tip"/>
 
 * Configuration syntax: waf_modsecurity_transaction_id \<*string*\>
