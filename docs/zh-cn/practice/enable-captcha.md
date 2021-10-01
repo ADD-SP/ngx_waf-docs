@@ -16,7 +16,7 @@ lang: zh-CN
         server {
             # /path/to/copy.html 是你拷贝并修改的 HTML 文件的完整路径
             # your_secret 是你从验证码平台申请道德 Secret
-            waf_captcha on file=/path/to/copy.html secret=your_secret;
+            waf_captcha on prov=hCaptcha file=/path/to/copy.html secret=your_secret;
         }
         ```
     * 为某个路径开启验证码
@@ -24,7 +24,7 @@ lang: zh-CN
         # /path/to/copy.html 是你拷贝并修改的 HTML 文件的完整路径
         # your_secret 是你从验证码平台申请道德 Secret
         location {
-            waf_captcha on file=/path/to/copy.html secret=your_secret;
+            waf_captcha on prov=hCaptcha file=/path/to/copy.html secret=your_secret;
         }
         ```
     * 当访问频率过高时开启验证码
@@ -33,7 +33,7 @@ lang: zh-CN
         waf_cc_deny CAPTCHA rate=1000r/m duration=1h;
         # /path/to/copy.html 是你拷贝并修改的 HTML 文件的完整路径
         # your_secret 是你从验证码平台申请道德 Secret
-        waf_captcha off file=/path/to/copy.html secret=your_secret;
+        waf_captcha off prov=hCaptcha file=/path/to/copy.html secret=your_secret;
         ```
 5. 重启 nginx。
 
