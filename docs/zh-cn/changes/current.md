@@ -32,6 +32,47 @@ lang: zh-CN
 
 ***
 
+## [9.0.5] - 2021-10-09 UTC+0800
+
+### 新的测试套件
+
+偶然间看到了一个测试套件：[test-nginx](https://github.com/openresty/test-nginx)。
+看完之后感觉很好便拿来测试，编了不少测试用例，果不其然发现了一大堆 Bug，不愧是我。
+
+### 变动
+
+* 删除了无用的调试日志。
+
+* 更多的调试日志。
+
+### 修复
+
+* 有时连接会被过早地关闭。
+
+* 启用 CAPTCHA 后请求体的检测结果可能会出错。
+
+* CAPTCHA 可能会因为 HTTP 缓存而失败。
+
+* 重载 nginx 时存在内存泄露。
+
+* 未能正确合并上层配置块的 `waf_cache` 指令。
+
+* 未能正确合并上层配置块的 `waf_cc_deny` 指令。
+
+* 未能正确继承上层配置块的 Referer 黑名单。
+
+* 未能正确识别一些错误的配置。
+
+* 修复了一条默认的 URL 黑名单规则。
+
+* 修复了下列文件，使得验证码完成后可以自动刷新网页。
+    * `assets/hCaptcha.html`
+    * `assets/reCAPTCHAv2_Checkbox.html`
+    * `assets/reCAPTCHAv2_Invisible.html`
+    * `assets/reCAPTCHAv3.html`
+
+***
+
 ## [9.0.4] - 2021-09-29 UTC+0800
 
 ### 修复

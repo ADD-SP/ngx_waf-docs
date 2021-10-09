@@ -31,6 +31,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+
+## [9.5.5] - 2021-10-09 UTC+0800
+
+### New test suite
+
+By chance, I found a test suite: [test-nginx](https://github.com/openresty/test-nginx).
+It looked great, so I wrote a lot of test cases and tested with it. <del>Un</del>fortunately I found a lot of bugs, very wise of me.
+
+### Changed
+
+* Removed useless debug log.
+
+* More debug log.
+
+### Fixed
+
+* Sometimes the connection is closed prematurely.
+
+* When CAPTCHA is enabled, the request body inspection may be wrong.
+
+* CAPTCHA may fail due to HTTP caching.
+
+* Memory leak when reloading nginx.
+
+* Failed to properly merge directive `waf_cache` from different contexts.
+
+* Failed to properly merge directives `waf_cc_deny` from different contexts.
+
+* Failed to inherit `Referer` blacklist different contexts.
+
+* Failed to properly handle incorrect command syntax.
+
+* Fixed a default rule of URL.
+
+* Fixed the following files so that the page can be refreshed automatically after the CAPTCHA is completed.
+    * `assets/hCaptcha.html`
+    * `assets/reCAPTCHAv2_Checkbox.html`
+    * `assets/reCAPTCHAv2_Invisible.html`
+    * `assets/reCAPTCHAv3.html`
+
+
+***
+
 ## [9.0.4] - 2021-09-29 UTC+0800
 
 ### Fixed

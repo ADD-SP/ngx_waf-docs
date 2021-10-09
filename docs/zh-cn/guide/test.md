@@ -5,13 +5,30 @@ lang: zh-CN
 
 # 测试
 
-## 简单测试
+## 简易测试
 
 运行下列命令，如果输出 403 则表示模块正常工作。
 
 ```shell
 curl -I -o /dev/null --user-agent bench -s -w "%{http_code}\\n" https://example.com/
 ```
+
+## 自动测试
+
+本项目附带了许多测试用例，你可以通过下面的指令来运行全部的用例。
+
+```shell
+# 这行命令的执行时间比较长，但是以后再测试的时候就不需要运行了。
+cpan Test::Nginx
+
+# 如果你安装了动态模块则需要指定动态模块的绝对路径，反之则无需执行这行命令。
+export MODULE_PATH=/path/to/ngx_http_waf_module.so
+
+cd ./test/test-nginx
+sh ./start.sh ./t/*.t
+```
+
+正常情况下所有的用例都会通过，如果没有通过请告诉我们。
 
 ## 性能测试
 

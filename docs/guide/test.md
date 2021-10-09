@@ -13,6 +13,26 @@ Run the following command, if the output is 403 then the module is working prope
 curl -I -o /dev/null --user-agent bench -s -w "%{http_code}\\n" https://example.com/
 ```
 
+## Automated Testing
+
+This project comes with many test cases.
+
+To run it on your side:
+
+```shell
+## It will take a lot of time, but it only needs to be run once.
+cpan Test::Nginx
+
+# You need to specify the absolute path to the dynamic module if you have it installed, 
+# otherwise you do not need to run this line.
+export MODULE_PATH=/path/to/ngx_http_waf_module.so
+
+cd . /test/test-nginx
+sh . /start.sh . /t/*.t
+```
+
+Normally all cases will pass, if not please let us know.
+
 ## Performance Test
 
 ### Example Test
