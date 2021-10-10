@@ -33,8 +33,8 @@ export MODULE_TEST_PATH=/path/to/temp/dir
 export MODULE_PATH=/path/to/ngx_http_waf_module.so
 
 cd . /test/test-nginx
-sh ./init
-sh . /start.sh . /t/*.t
+sh ./init.sh
+sh ./start.sh ./t/*.t
 ```
 
 Normally all cases will pass, if not please let us know.
