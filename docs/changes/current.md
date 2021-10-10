@@ -31,6 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [9.0.6] - 2021-10-10 UTC+0800
+
+### Fixed
+
+* If the directive `try_files` is executed, CAPTCHA may fail.
+
+***
+
 
 ## [9.0.5] - 2021-10-09 UTC+0800
 
