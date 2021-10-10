@@ -72,16 +72,8 @@ git clone -b lts https://github.com/ADD-SP/ngx_waf.git
 ```sh
 cd /usr/local/src/nginx-1.20.1
 ./configure ARG --add-module=/usr/local/src/ngx_waf
+sed -i 's/^\(CFLAGS.*\)/\1 -fstack-protector-strong -Wno-sign-compare/' objs/Makefile
 ```
-
-::: warning 注意
-
-* `ARG` 的含义见[编译安装](#编译安装)。
-
-* 如果您使用的编译器是 GCC，请在 `--with-cc-opt` 中追加 `-fstack-protector-strong`，
-例如 `--with-cc-opt='-Werror -g'` ---> `--with-cc-opt='-Werror -g -fstack-protector-strong'`
-
-:::
 
 接着您开始编译了
 
@@ -173,14 +165,8 @@ load_module "/path/to/ngx_http_waf_module.so";
 
 ```sh
 ./configure --add-dynamic-module=/usr/local/src/ngx_waf --with-compat
+sed -i 's/^\(CFLAGS.*\)/\1 -fstack-protector-strong -Wno-sign-compare/' objs/Makefile
 ```
-
-::: warning 注意
-
-* 如果您使用的编译器是 GCC，请在 `--with-cc-opt` 中追加 `-fstack-protector-strong`，
-例如 `--with-cc-opt='-Werror -g'` ---> `--with-cc-opt='-Werror -g -fstack-protector-strong'`
-
-:::
 
 然后开始编译动态模块
 
@@ -237,7 +223,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 
     # Ubuntu
     apt update
-    apt install -y ibsodium23   \
+    apt install -y libsodium23  \
         libsodium-dev           \
         libcurl4-openssl-dev    \
         git                     \
@@ -247,9 +233,10 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 
 2. 在软件商店中卸载 nginx。
 
-3. 编辑文件 `/etc/profile`，在末尾追加两行。
+3. 编辑文件 `/etc/profile`，在末尾追加下列内容。
     ```shell
     export LIB_UTHASH=/www/server/nginx/src/uthash
+    export TEMP_CC_OPT='-std=gnu99 -Wno-sign-compare'
 
     # 如果操作系统的 Ubuntu 则不用写下面这两行
     export LIB_SODIUM=/usr/local/libsodium
@@ -270,7 +257,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     * 模块描述：方便且高性能的 Nginx 防火墙模块 
     * 模块参数：
         ```shell
-        --add-module=/www/server/nginx/src/ngx_waf --with-cc-opt=-std=gnu99
+        --add-module=/www/server/nginx/src/ngx_waf --with-cc-opt=$TEMP_CC_OPT
         ```
     * 前置脚本（LTS 版）：
         ```shell
@@ -301,7 +288,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 
 8. 这时你会看到 ngx_waf 已经添加进去了，在模块列表中打上勾之后点击「提交」等待安装完成。
 
-9. 安装成功后删除第四步中向文件 `/etc/profile` 中添加的内容。
+9. 安装成功后删除第三步中向文件 `/etc/profile` 中添加的内容。
 
 
 ::: tip 报错了怎么办？

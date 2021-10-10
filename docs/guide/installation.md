@@ -69,16 +69,9 @@ Next you should run the configuration script.
 ```sh
 cd /usr/local/src/nginx-1.20.1
 ./configure ARG --add-module=/usr/local/src/ngx_waf --with-debug
+sed -i 's/^\(CFLAGS.*\)/\1 -fstack-protector-strong -Wno-sign-compare/' objs/Makefile
 ```
 
-::: warning NOTE
-
-* The meaning of `ARG` is given in [Compile And Install](#compile-and-install).
-
-* If you are using GCC as your compiler, append `-fstack-protector-strong` to `-with-cc-opt`.
-For example `--with-cc-opt='-Werror -g'` ---> `--with-cc-opt='-Werror -g -fstack-protector-strong'`
-
-:::
 
 Then start compiling.
 
@@ -171,14 +164,8 @@ Run the configuration script
 
 ```sh
 ./configure --add-dynamic-module=/usr/local/src/ngx_waf --with-compat --with-debug
+sed -i 's/^\(CFLAGS.*\)/\1 -fstack-protector-strong -Wno-sign-compare/' objs/Makefile
 ```
-
-::: warning NOTE
-
-* If you are using GCC as your compiler, append `-fstack-protector-strong` to `-with-cc-opt`.
-For example `--with-cc-opt='-Werror -g'` ---> `--with-cc-opt='-Werror -g -fstack-protector-strong'`
-
-:::
 
 Then start compiling the dynamic module
 

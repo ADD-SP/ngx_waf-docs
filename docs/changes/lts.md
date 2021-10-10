@@ -32,6 +32,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [6.1.6] - 2021-10-10 UTC+0800
+
+### Fixed
+
+* Sometimes the connection is closed prematurely.
+
+* Sometimes the request body is read incompletely.
+
+* Failed to inherit `Referer` blacklist different contexts.
+
+* Fixed a default rule of URL.
+
+***
+
 ## [6.1.5] - 2021-09-29 UTC+0800
 
 ### Fixed

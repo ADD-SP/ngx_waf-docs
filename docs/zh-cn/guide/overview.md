@@ -50,16 +50,22 @@ lang: zh-CN
 本项目使用一个 Perl 开发的数据驱动型的测试套件进行测试。
 感谢项目 [Test::Nginx](http://search.cpan.org/perldoc?Test::Nginx) 及其开发者们。
 
-你可以运行下列命令来运行测试。
+你可以通过下列命令来运行测试。
 
 ```shell
 # 这行命令的执行时间比较长，但是以后再测试的时候就不需要运行了。
 cpan Test::Nginx
 
+# 你需要指定一个临时目录。
+# 如果目录不存在会自动创建。
+# 如果目录已经会被存在则会先**删除**再创建。
+export MODULE_TEST_PATH=/path/to/temp/dir
+
 # 如果你安装了动态模块则需要指定动态模块的绝对路径，反之则无需执行这行命令。
 export MODULE_PATH=/path/to/ngx_http_waf_module.so
 
 cd ./test/test-nginx
+sh ./init
 sh ./start.sh ./t/*.t
 ```
 
