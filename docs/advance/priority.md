@@ -22,8 +22,8 @@ The following is a list of all the tests in order of priority, from top to botto
 11. Referer whitelist inspection
 12. Referer blacklist inspection
 13. Cookie blacklist inspection
-14. Advanced rules
-15. Post request body blacklist
+14. Post request body blacklist
+15. ModSecurity
 
 
 ::: tip Change priority

@@ -22,9 +22,8 @@ lang: zh-CN
 11. Referer 白名单检测
 12. Referer 黑名单检测
 13. Cookie 黑名单检测
-14. 高级规则
-15. Post 请求体黑名单
-16. ModSecurity 的规则 <Badge text="仅限最新的 Current 版本" type="tip"/>
+14. Post 请求体黑名单
+15. ModSecurity 的规则 <Badge text="仅限最新的 Current 版本" type="tip"/>
 
 
 ::: tip 修改优先级
