@@ -31,6 +31,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [10.0.0] - 2021-11-30 UTC+0800
+
+### Added
+
+* New directive `waf_zone`, used to declare a piece of shared memory that will be used for other directives, such as `waf_cc_deny`.
+
+* New directive `waf_action`, used to set actions after intercepting a request, such as returning a specific status code or challenging the client with a captcha.
+
+* New directive `waf_block_page`, used to set the blocking page to return the specified HTML file when the request is blocked.
+
+* A new embedded variable, `$waf_rate`, is used to indicate the number of accesses to the current IP in a period. The period is determined by the parameter `rate` of the directive `waf_cc_deny`, or by the parameter `duration` if the IP has been blacked out.
+
+* The directive `waf_captcha` has a new parameter `max_fails`, which sets the maximum number of attempts for the captcha and the blocking time after it is exceeded.
+
+* The directive `waf_captcha` has a new parameter `zone` that specifies a piece of shared memory, which needs to be set if and only if the parameter `max_fails` is set.
+
+* The directive `waf_captcha` has a new parameter `sitekey`, which needs to be set if and only if the parameter `file` is omitted.
+
+* When you reload nginx, the module keeps as much information in shared memory as possible so that it is not emptied, such as statistics used by CC protection.
+
+
+### Removed
+
+* The directive `waf_http_status` has been removed and the related features have been merged into the directive `waf_action`.
+
+* The parameter `size` of the directive `waf_cc_deny` has been removed and `zone` is now used instead.
+
+
+### Changed
+
+* You can omit the parameter `file` of the directive `waf_under_attack`; omitting this parameter will use a built-in file from `assets/under_attack.html`.
+
+* You can omit the argument `file` to the directive `waf_captcha`, which when omitted will use a built-in file based on the value of the argument `prov`, which comes from the directory `assets/`.
+
+
+***
+
+
 ## [9.0.6] - 2021-10-10 UTC+0800
 
 ### Fixed

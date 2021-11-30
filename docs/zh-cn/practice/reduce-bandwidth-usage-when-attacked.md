@@ -10,8 +10,16 @@ lang: zh-CN
 
 你可以使用下面的配置来降低带宽占用。
 
+## LTS 版本
+
 ```nginx
 waf_http_status cc_deny=444;
+```
+
+## Current 版本
+
+```nginx
+waf_action cc_deny=444;
 ```
 
 444 状态码是 nginx 定义的一个非标准的 HTTP 状态码，其作用就是直接关闭连接，不再发送任何数据。

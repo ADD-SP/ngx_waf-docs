@@ -7,6 +7,12 @@ lang: zh-CN
 
 升级模块均需要按照[安装指南](/zh-cn/guide/installation.md)中的说明重新安装。
 
+## 从 `9.x.x` 升级到 `10.x.x`
+
+1. 如果你使用了指令 `waf_http_status`，请根据文档将其替换为指令 `waf_action`。
+2. 如果你设置了指令 `waf_cc_deny` 的参数 `size`，你应该根据文档使用参数 `zone` 来替代。
+3. 如果你使用了指令 `waf_cc_deny` 的参数 `CAPTCHA`，你应该根据文档使用指令 `waf_action` 来替代。
+
 ## 从 `8.x.x` 升级到 `9.x.x`
 
 1. 安装 [libmodsecurity](https://github.com/SpiderLabs/ModSecurity) 的动态链接库和头文件。

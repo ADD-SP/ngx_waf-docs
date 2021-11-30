@@ -14,19 +14,25 @@ When your website is under CC attack, it is good to turn on CAPTCHA because CAPT
     * Enable CAPTCHA for entire site.
         ```nginx
         server {
-            waf_captcha on prov=hCaptcha file=/path/to/copy.html secret=your_secret;
+            waf_captcha on prov=hCaptcha secret=your_secret sitekey=your_sitekey;
         }
         ```
     * Enable CAPTCHA for a path
         ```nginx
         location {
-            waf_captcha on prov=hCaptcha file=/path/to/copy.html secret=your_secret;
+            waf_captcha on prov=hCaptcha secret=your_secret sitekey=your_sitekey;
         }
         ```
     * Enable CAPTCHA when request rate is too high
         ```nginx
-        waf_cc_deny CAPTCHA rate=1000r/m duration=1h;
-        waf_captcha off prov=hCaptcha file=/path/to/copy.html secret=your_secret;
+        http {
+            waf_zone name=waf size=20m;
+            server {
+                waf_cc_deny on rate=1000r/m duration=1h zone=waf:cc;
+                waf_captcha off prov=hCaptcha secret=your_secret sitekey=your_sitekey;
+                waf_action cc_deny=CAPTCHA zone=waf:action;
+            }
+        }
         ```
 5. Restart nginx.
 

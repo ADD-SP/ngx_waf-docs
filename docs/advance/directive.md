@@ -13,6 +13,29 @@ lang: en
 
 Whether to enable this module.
 
+## `waf_zone`
+
+* syntax: waf_zone \<name=*zone_name*\> \[size=*5m*\]
+* default: —
+* context: http
+
+Creates a piece of shared memory to record some information that needs to be shared across processes because of nginx's multi-process model.
+
+You may need to fill in the parameter `zone` when you use certain directive, such as [waf_cc_deny](#waf-cc-deny).
+The fill format is `name:tag`, i.e. name and tag. Name and tag are "many-to-many", but for the same `zone`, the
+tag names cannot be repeated for the same `zone`.
+
+All tags within the same `zone` share the entire shared memory of that `zone`. For performance reasons, it is recommended that one `zone` be created for each `server` context.
+It is better not to have multiple `server` context sharing a single `zone`, because accessing shared memory requires locking, so minimize the number of locking.
+
+
+::: tip TIP
+
+1MB of memory can record at least 4096 IP.
+
+:::
+
+
 ## `waf_rule_path`
 
 * syntax: waf_rule_path \<*dir*\>
@@ -115,22 +138,15 @@ Set the parameters related to CC protection.
 * `size`: Used to set the size of the memory for recording IP accesses, such as `20m`, `2048k`, must not be less than `20m`, if not specified, the default is `20m`. When this memory is exhausted, the program will clean up some of the records according to the LRU policy.
 
 
-::: tip TIP
-
-1MB of memory can record at least 4096 IP.
-
-:::
-
-
 ::: tip CHANGES IN LATEST 'Current' VERSION
 
-* syntax: waf_cc_deny \<*off* | *on* | *CAPTCHA*\> \<rate=*n*r/t\> \[duration=*1h*\] \[size=*20m*\]
-* default: waf_cc_deny *off* duration=*1h* size=*20m*
+* syntax:  waf_cc_deny \<*off* | *on*\> \<rate=*n*r/t\> \<zone=*name:tag*\> \[duration=*1h*\]
+* default: waf_cc_deny *off*
 * context: server, location
 
 ***
 
-* `CAPTCHA`. When the request rate exceeds the set value, use CAPTCHA authentication to disable the IP if it fails three times in a row, and vice versa to recalculate the request frequency. When you enable this option, you must set the parameters `prov`, `file` and `secret` of the directive [waf_captcha](#waf-captcha). You can refer to the use case in [Enable Captcha | Best Practices](/practice/enable-captcha.md).
+* `zone`: Set the shared memory used to record the necessary information.
 * `rate`: indicates the upper rate of requests, such as `500r/s`, `500r/60s`, `500r/m`, `500r/60m`, `500r/h`, `500r/60h` and `500r/d`. Exceeding the limit returns a [503 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) with a [Retry-After](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After) response header.
 
 :::
@@ -167,7 +183,7 @@ So please set it reasonably according to your actual needs.
 ::: tip CHANGES IN LATEST 'Current' VERSION
 
 * syntax: waf_cache \<*off* | *on*\> \[capacity=*50*\]
-* default: waf_cache *off* \capacity=*50*
+* default: waf_cache *off* capacity=*50*
 * context: server, location
 
 :::
@@ -223,9 +239,6 @@ service nginx stop && serivce nginx start
 
 :::
 
-
-Translated with www.DeepL.com/Translator (free version)
-
 ## `waf_modsecurity_transaction_id` <Badge text="Latest Current version only" type="tip"/>
 
 * Configuration syntax: waf_modsecurity_transaction_id \<*string*\>
@@ -249,29 +262,34 @@ server {
 
 ## `waf_captcha` <Badge text="Latest Current version only" type="tip"/>
 
-* syntax: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\> \<file=*/full/path*\> \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
+* syntax: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2:checkbox* | *reCAPTCHAv2:invisible* | *reCAPTCHAv3*\> \[file=*/full/path*\] \[sitekey=*your_sitekey*\] \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\] \[max_fails=*times:duration*\] \[zone=*name:tag*\]
 * default: waf_captcha off
 * context: http, server, location
 
 Use CAPTCHA for human identification of the client.
 
-* `prov`: CAPTCHA platform with [hCaptcha](https://www.hcaptcha.com/), [reCAPTCHAv2](https://www.google.com/recaptcha/about/) and [reCAPTCHAv3](https:/ /www.google.com/recaptcha/about/).
-* `file`: the absolute path of the HTML file used to access the CAPTCHA, you can find the corresponding HTML file under `assets/`.
+* `prov`: CAPTCHA platform with [hCaptcha](https://www.hcaptcha.com/), [reCAPTCHAv2](https://www.google.com/recaptcha/about/) and [reCAPTCHAv3](https://www.google.com/recaptcha/about/).
+* `file`: The absolute path to the HTML file used to access the captcha, you can find the corresponding HTML file under `assets/` and fill in your `sitekey` in the file. If you omit this parameter, a built-in HTML file (from the directory `assets/`) will be selected and used based on the value of the parameter `prov`, where you need to set the parameter `sitekey`.
+* `sitekey`: the sitekey you get from the captcha platform, this parameter needs to be set if and only if the parameter `file` is omitted.
 * `secret`: the key used to confirm the result of the CAPTCHA, you can get it from the corresponding CAPTCHA platform.
 * `socre`: when `prov=reCAPTCHAv3`, this indicates the minimum value of the CAPTCHA scoring result, below which the validation will be considered as failed. The default value is `0.5`.
 * ``expire``: the expiration time of the CAPTCHA, after which the CAPTCHA needs to be re-run. The default is 30 minutes.
 * `api`: The API provided by the CAPTCHA platform to the server to confirm the result of the CAPTCHA run.
     * If `prov=hCaptcha`, the default value is `https://hcaptcha.com/siteverify`.
-    * If `prov=reCAPTCHAv2`, then the default value is `https://www.recaptcha.net/recaptcha/api/siteverify`.
+    * If `prov=reCAPTCHAv2:xxx`, then the default value is `https://www.recaptcha.net/recaptcha/api/siteverify`.
     * If `prov=reCAPTCHAv3`, the default value is `https://www.recaptcha.net/recaptcha/api/siteverify`.
 * `verify`: the url used by the captcha to submit the token to the backend, defaults to `/captcha`.
+* `max_fails`: The maximum number of times the CAPTCHA can be refreshed/tried, beyond which the corresponding IP is blacked out for a period of time. For example, `max_fails=20:5m` means that the IP will be blacked out for 5 minutes after 20 consecutive refreshes/tries. This is useful when you are using billing CAPTCHA. When you set this parameter, you must also set the parameter `zone`.
+* `zone`: Set the shared memory used to record the number of CAPTCHA tries, this parameter is required if and only if parameter `max_fails` is set.
+
 
 You can refer to the use case in [Enable Captcha | Best Practices](/practice/enable-captcha.md).
 
-:::tip Fill in your Sitekey
+::: tip Use your own CAPTCHA page
 
-You can find the HTML used for each CAPTCHA in the directory `assets/` and make a copy of it, then fill in your `Sitekey' in the copy.
+You can customize the captcha page based on the HTML file under the directory `assets/` and load it with the parameter `file`.
 
+Don't forget to fill in the `sitekey` in the HTML file.
 :::
 
 
@@ -289,7 +307,7 @@ If the first parameter is `strict`, then if the User-Agent of a request is corre
 
 * `who`: the name of the crawler, values include `GoogleBot`, `BingBot`, `BaiduSpider` and `YandexBot`. If not specified, the default is all.
 
-::: tip How IT WORKS?
+::: tip HOW IT WORKS?
 
 * [Overview of Google crawlers (user agents) | Search Central](https://developers.google.com/search/docs/advanced/crawling/overview-google-crawlers)
 * [Googlebot Verification | Google Search Central | Google Developers](https://developers.google.com/search/docs/advanced/crawling/verifying-googlebot)
@@ -332,8 +350,12 @@ So we changed the implementation so that we return the specified page by changin
 
 We also added the response header `Cache-Control: no-store` to avoid the impact of caching.
 
+* synyax: waf_under_attack \<*on* | *off*\> \[file=*full_path*\]
+* default: waf_under_attack *off*
+* context: http, server, location
+
 * Removed the parameter `uri`.
-* Added parameter `file`, the value of which should be the absolute path to an HTML file, e.g. `file=/path/to/under-attack.html`. This HTML has only one function, i.e. it refreshes automatically after five seconds.
+* Added parameter `file`, the value of this parameter should be the absolute path to an HTML file, e.g. `file=/path/to/under-attack.html`. This HTML has only one function, which is to refresh automatically after five seconds. When you omit this parameter, the default is to use the built-in HTML file, which comes from `assets/under-attack.html`.
 
 :::
 
@@ -391,5 +413,33 @@ This directive is used to set the HTTP status code returned when a request is bl
 
 * `general`: Indicates the HTTP status code returned when all blacklist-based inpection are triggered.
 * `cc_deny`: Indicates the HTTP status code returned when CC protection is triggered.
+
+::: warning CHANGES IN LATEST 'Current' VERSION
+
+This directive has been removed from `v10.0.0` and the associated features moved to directive [waf_action](#waf-action).
+
+:::
+
+
+## `waf_action`
+
+* syntax: waf_action \[blacklist=*action*\] \[cc_deny=*action*\] \[modsecurity=*action*\] \[verify_bot=*action*\] \[zone=*name:tag*\]
+* default: waf_action *blacklist=403* *cc_deny=503* *modsecurity=follow* *verify_bot=403*
+* context: http, server, location
+
+
+This directive is used to set the action to be taken when blocking a request. `action` indicates a specific action and can be the following values.
+
+* `4xx | 5xx`：HTTP response code.
+* `CAPTCHA`：Use the CAPTCHA to challenge.
+* `follow`：Follow the action of Modsecurity's rule, only for parameter `modsecurity`.
+
+parameters:
+
+* `blacklist`: All blacklist-based rules, such as IP blacklist, User-Agent blacklist, URL blacklist, etc.
+* `cc_deny`: CC protection.
+* `modsecurity`：ModSecurity's rules.
+* `verify_bot`：[waf_verify_bot](#waf-verify-bot).
+* `zone`：Set the shared memory used to record the necessary information, if and only if an `action` is `CAPTCHA`.
 
 

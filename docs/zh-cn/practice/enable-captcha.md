@@ -8,34 +8,31 @@ lang: zh-CN
 当你的站点受到 CC 攻击时开启验证码是不错的选择，因为验证码可以帮助你进行人机识别。
 
 1. 本模块目前支持三种验证码，分别是 [hCaptcha](https://www.hcaptcha.com/)、[reCAPTCHAv2](https://developers.google.com/recaptcha) 和 [reCAPTCHAv3](https://developers.google.com/recaptcha)。你应该选择一个并从其网站上申请到 Sitekey 和 Secret。
-2. 访问本项目目录下的 `assets/` 目录并找到对应的 HTML 文件，然后拷贝一份到任意路径。例如，如果你使用 [hCaptcha](https://www.hcaptcha.com/)，你应该拷贝 `assets/hCaptcha.html`。
-3. 修改拷贝出来的 HTML 文件，将字符串 `Your Sitekey` 修改为你从验证码平台申请到的 Sitekey。
-4. 修改 nginx 的配置文件
+2. 修改 nginx 的配置文件
     * 为整个站点开启验证码。
         ```nginx
         server {
-            # /path/to/copy.html 是你拷贝并修改的 HTML 文件的完整路径
-            # your_secret 是你从验证码平台申请道德 Secret
-            waf_captcha on prov=hCaptcha file=/path/to/copy.html secret=your_secret;
+            waf_captcha on prov=hCaptcha secret=your_secret sitekey=your_sitekey;
         }
         ```
     * 为某个路径开启验证码
         ```nginx
-        # /path/to/copy.html 是你拷贝并修改的 HTML 文件的完整路径
-        # your_secret 是你从验证码平台申请道德 Secret
         location {
-            waf_captcha on prov=hCaptcha file=/path/to/copy.html secret=your_secret;
+            waf_captcha on prov=hCaptcha secret=your_secret sitekey=your_sitekey;
         }
         ```
     * 当访问频率过高时开启验证码
         ```nginx
-        # 当访问频率超出限制时会使用验证码进行人机识别，识别失败则拉黑。
-        waf_cc_deny CAPTCHA rate=1000r/m duration=1h;
-        # /path/to/copy.html 是你拷贝并修改的 HTML 文件的完整路径
-        # your_secret 是你从验证码平台申请道德 Secret
-        waf_captcha off prov=hCaptcha file=/path/to/copy.html secret=your_secret;
+        http {
+            waf_zone name=waf size=20m;
+            server {
+                waf_cc_deny on rate=1000r/m duration=1h zone=waf:cc;
+                waf_captcha off prov=hCaptcha secret=your_secret sitekey=your_sitekey;
+                waf_action cc_deny=CAPTCHA zone=waf:action;
+            }
+        }
         ```
-5. 重启 nginx。
+3. 重启 nginx。
 
 ::: warning 警告
 

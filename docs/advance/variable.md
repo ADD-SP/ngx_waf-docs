@@ -1,9 +1,9 @@
 ---
-title: Built-in Variables
+title: Embedded Variables
 lang: en
 ---
 
-# Built-in Variables
+# Embedded Variables
 
 When writing `nginx.conf`, some variables are inevitably needed. For example, `$remote_addr` can be used to get the client IP address.
 
@@ -50,3 +50,7 @@ If a black and white list rule is in effect for this request, the value is the t
 ## `$waf_rule_details`
 
 If this request is blocked by this module, its value is the content of the specific rule triggered. If it is not blocked, its value is `''`.
+
+## `$waf_rate`
+
+An integer that represents the number of accesses to the current IP in a cycle.

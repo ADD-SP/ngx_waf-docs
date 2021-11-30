@@ -24,12 +24,18 @@ location /dynamic/ {
 ## Current 版本
 
 ```nginx
-# 将静态资源的请求速率限制到 10,000 次/分钟。
-location /static/ {
-    waf_cc_deny on rate=10000r/m duration=1h;
-}
+http {
+    waf_zone name=waf size=20m;
+    server {
+        # 将静态资源的请求速率限制到 10,000 次/分钟。
+        location /static/ {
+            waf_cc_deny rate=10000r/m duration=1h zone=waf:cc_static;
+        }
 
-# 将动态资源的请求速率限制到 2,000 次/分钟。
-location /dynamic/ {
-    waf_cc_deny on rate=2000r/m duration=1h;
+        # 将动态资源的请求速率限制到 2,000 次/分钟。
+        location /dynamic/ {
+            waf_cc_deny rate=2000r/m duration=1h zone=waf:cc_dynamic;
+        }
+    }
 }
+```

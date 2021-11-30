@@ -27,6 +27,8 @@ You can enable Under-Attack-Mode by copying the file `under-attack.html` from th
 
 To enable Under-Attack-Mode, you need to copy the file `/path/to/ngx_waf/assets/under-attack.html` to a path, and then modify the nginx configuration file.
 
+### LTS version
+
 * Enable Under-Attack-Mode for entire site.
     ```nginx
     server {
@@ -37,6 +39,22 @@ To enable Under-Attack-Mode, you need to copy the file `/path/to/ngx_waf/assets/
     ```nginx
     location /path {
         waf_under_attack on file=/path/to/under_attack.html;
+    }
+    ```
+
+### `Current` version
+
+
+* Enable Under-Attack-Mode for entire site.
+    ```nginx
+    server {
+        waf_under_attack on;
+    }
+    ```
+* Enable Under-Attack-Mode for a path.
+    ```nginx
+    location /path {
+        waf_under_attack on;
     }
     ```
 

@@ -10,8 +10,16 @@ This is because the CC protection returns a status code of 503 and therefore hog
 
 You can use the following configuration to reduce the bandwidth usage.
 
+## For LTS version
+
 ```nginx
 waf_http_status cc_deny=444;
+```
+
+## For `Current` version
+
+```nginx
+waf_action cc_deny=444;
 ```
 
 Status code 444 is a non-standard HTTP status code defined by nginx that serves to close the connection and not send any data.

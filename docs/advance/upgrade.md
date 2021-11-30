@@ -7,6 +7,12 @@ lang: en
 
 To upgrade the module, you need to reinstall it according to the instructions in [installation guide](/guide/installation.md).
 
+## Upgrade from `9.x.x` to `10.x.x`
+
+1. If you use the directive `waf_http_status`, replace it with the directive `waf_action` according to the documentation.
+2. If you set the parameter `size` of the directive `waf_cc_deny`, you should replace it with the parameter `zone` according to the documentation.
+3. If you use the parameter `CAPTCHA` of the directive `waf_cc_deny`, you should use the directive `waf_action` instead, according to the documentation.
+
 ## Upgrade from `8.x.x` to `9.x.x`
 
 1. Install the dynamic libraries and headers for [libmodsecurity](https://github.com/SpiderLabs/ModSecurity).

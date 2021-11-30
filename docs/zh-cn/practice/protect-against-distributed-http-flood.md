@@ -23,6 +23,8 @@ CC 攻击（HTTP 洪水）是指发送大量的 HTTP 请求来耗尽服务器的
 
 你可以从本项目的 `assets/` 目录下找到 `under-attack.html` 并将其拷贝到某个路径下，然后通过修改 nginx 的配置文件来开启五秒盾。
 
+### LTS 版本
+
 * 为整个网站开启五秒盾
     ```nginx
     server {
@@ -33,6 +35,21 @@ CC 攻击（HTTP 洪水）是指发送大量的 HTTP 请求来耗尽服务器的
     ```nginx
     location /path {
         waf_under_attack on file=/path/to/under_attack.html;
+    }
+    ```
+
+### Current 版本
+
+* 为整个网站开启五秒盾
+    ```nginx
+    server {
+        waf_under_attack on;
+    }
+    ```
+* 为某个路径开启五秒盾
+    ```nginx
+    location /path {
+        waf_under_attack on;
     }
     ```
 

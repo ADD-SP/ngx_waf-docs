@@ -13,9 +13,31 @@ lang: zh-CN
 
 是否启用本模块。
 
+## `waf_zone`
+
+* 配置语法: waf_zone \<name=*zone_name*\> \[size=*5m*\]
+* 默认配置：——
+* 配置段: http
+
+创建一段共享内存，用于记录一些需要跨进程共享的信息，因为 nginx 的多进程模型。
+
+在你使用某些配置时可能需要填写参数 `zone`，比如 [waf_cc_deny](#waf-cc-deny)。
+填写格式为 `name:tag`，即名称和标签。名称和标签是 “多对多” 的关系，但是对于同一个 `zone`，
+标签名不能重复。
+
+同一个 `zone` 内的全部标签共用该 `zone` 的全部的共享内存。出于性能考虑，建议为每个 `server` 段创建一个 `zone`，
+最好不要多个 `server` 段共用一个 `zone`，因为访问共享内存需要上锁，要尽量减少上锁的次数。
+
+::: tip 估算所需的内存大小
+
+经过估计，1M 的内存至少可以记录 4096 个 IP。
+
+:::
+
+
 ## `waf_rule_path`
 
-* 配置语法: waf_rule_path <\*dir*\>
+* 配置语法: waf_rule_path \<*dir*\>
 * 默认配置：——
 * 配置段: http, server, location
 
@@ -117,23 +139,15 @@ waf_mode !UA STD;
 * `size`：用于设置记录 IP 访问次数的内存的大小，如 `20m`、`2048k`，不得小于 `20m`，如不指定则默认为 `20m`。当这段内存耗尽的时候程序会按照 LRU 策略清理一部分访问记录。
 
 
-::: tip 估算所需的内存大小
-
-经过估计，1M 的内存至少可以记录 4096 个 IP。
-
-:::
-
-
 ::: tip 最新的 Current 版本中的变化
 
-* 配置语法: waf_cc_deny \<*off* | *on* | *CAPTCHA*\> \<rate=*n*r/t\> \[duration=*1h*\] \[size=*20m*\]
-* 默认配置：waf_cc_deny *off* duration=*1h* size=*20m*
+* 配置语法: waf_cc_deny \<*off* | *on*\> \<rate=*n*r/t\> \<zone=*name:tag*\> \[duration=*1h*\]
+* 默认配置：waf_cc_deny *off*
 * 配置段: server, location
 
 ***
 
-* `CAPTCHA`：当请求频率超出设定值时会使用验证码进行验证，如果连续三次验证失败则拉黑 IP，反之重新计算请求频率。你可以参考[开启验证码 | 最佳实践](/zh-cn/practice/enable-captcha.md)中的用例。
-当你启用了此选项时，你必须设置 [waf_captcha](#waf-captcha) 的 `prov`、`file` 和 `secret` 这三个参数。
+* `zone`：指定所使用的共享内存和标签，用于记录 IP 的访问次数。当这段内存耗尽的时候程序会按照 LRU 策略清理一部分访问记录。
 * `rate`：表示一段时间内的请求次数的上限，如 `500r/s`、`500r/60s`、`500r/m`、`500r/60m`、`500r/h`、`500r/60h` 和 `500r/d`。超出限制后会返回 [503 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/503)，并附带 [Retry-After](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After) 响应头。
 
 :::
@@ -165,7 +179,7 @@ waf_mode !UA STD;
 ::: tip 最新的 Current 版本中的变化
 
 * 配置语法: waf_cache \<*off* | *on*\> \[capacity=*50*\]
-* 默认配置：waf_cache *off* \capacity=*50*
+* 默认配置：waf_cache *off* capacity=*50*
 * 配置段: server, location
 
 :::
@@ -246,30 +260,35 @@ server {
 
 ## `waf_captcha` <Badge text="仅限最新的 Current 版本" type="tip"/>
 
-* 配置语法: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2* | *reCAPTCHAv3*\> \<file=*/full/path*\> \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\]
-* 默认配置：waf_captcha off
-* 配置段: http, server, location
+* 配置语法: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2:checkbox* | *reCAPTCHAv2:invisible* | *reCAPTCHAv3*\> \[file=*/full/path*\] \[sitekey=*your_sitekey*\] \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\] \[max_fails=*times:duration*\] \[zone=*name:tag*\]
+* 默认配置：waf_captcha *off*
+* 配置段: server, location
 
 使用验证码对客户端进行人机识别。
 
 * `prov`：验证码平台，包含 [hCaptcha](https://www.hcaptcha.com/)、[reCAPTCHAv2](https://www.google.com/recaptcha/about/) 和 [reCAPTCHAv3](https://www.google.com/recaptcha/about/)。
-* `file`：用于接入验证码的 HTML 文件的绝对路径，你可以从 `assets/` 下找到对应的 HTML 文件。
+* `file`：用于接入验证码的 HTML 文件的绝对路径，你可以从 `assets/` 下找到对应的 HTML 文件并在文件中填写你的 `Sitekey`。如果你省略此参数，则会根据参数 `prov` 的值选择并使用一个内置的 HTML 文件（来自目录 `assets/`），此时你需要设置参数 `sitekey`。
+* `sitekey`：你从验证码平台获取的网站密钥，当且仅当参数 `file` 被省略时需要设置本参数。
 * `secret`：用于确认验证码的运行结果的密钥，你可以从对应的验证码平台获得。
 * `socre`：当 `prov=reCAPTCHAv3` 时，这个表示验证码打分结果的下限，低于这个值会被视为验证失败。默认值为 `0.5`。
 * `expire`：验证码的过期时间，过期后需要重新运行验证码。默认为 30 分钟。
 * `api`：验证码平台的提供给服务端的 API，用于确认验证码的运行结果。
     * 如果 `prov=hCaptcha`，则默认值为 `https://hcaptcha.com/siteverify`。
-    * 如果 `prov=reCAPTCHAv2`，则默认值为 `https://www.recaptcha.net/recaptcha/api/siteverify`。
+    * 如果 `prov=reCAPTCHAv2:xxx`，则默认值为 `https://www.recaptcha.net/recaptcha/api/siteverify`。
     * 如果 `prov=reCAPTCHAv3`，则默认值为 `https://www.recaptcha.net/recaptcha/api/siteverify`。
 * `verify`：验证码向后端提交 token 所用的 url，默认为 `/captcha`。
+* `max_fails`：验证码最大刷新/试错次数，超出这个次数拉黑对应的 IP 一段时间。例如 `max_fails=20:5m` 表示连续刷新/试错二十次后拉黑 5 分钟。当你使用计费的验证码时这很有用。当你设置了此参数，你必须同时设置参数 `zone`。
+* `zone`：设置用于记录验证码试错次数的共享内存，当且仅当参数 `max_fails` 被设置时才需要设置此参数。
 
 
 你可以参考[开启验证码 | 最佳实践](/zh-cn/practice/enable-captcha.md)中的用例。
 
 
-::: tip 填写你的 Sitekey
+::: tip 自定义验证码页面
 
-你可以在 `assets/` 目录下找到接入每个验证码所使用的 HTML 并拷贝一份，然后在副本中填入你的 `Sitekey`。
+你可以以目录 `assets/` 下的 HTML 文件为基础，自定义验证码页面，然后通过参数 `file`加载。
+
+不要忘记在 HTML 文件中填写 `sitekey`。
 
 :::
 
@@ -331,10 +350,14 @@ server {
 在 LTS 版本中我们通过重定向实现了该功能，但是许多原因（如缓存和 CDN）会导致重定向失败，或者不能正常验证 Cookie。
 所以我们修改了实现方式，我们通过修改响应体来返回指定的网页，这种方式不会导致 URI 的改变。
 
+* 配置语法: waf_under_attack \<*on* | *off*\> \[file=*full_path*\]
+* 默认配置：waf_under_attack *off*
+* 配置段: http, server, location
+
 同时我们增加了响应头 `Cache-Control: no-store` 以避免缓存带来的影响。
 
 * 移除了参数 `uri`。
-* 增加了参数 `file`，该参数的值应该是一个 HTML 文件的绝对路径，如 `file=/path/to/under-attack.html`。这个 HTML 只有一个功能，即五秒后自动刷新。
+* 增加了参数 `file`，该参数的值应该是一个 HTML 文件的绝对路径，如 `file=/path/to/under-attack.html`。这个 HTML 只有一个功能，即五秒后自动刷新。当你省略此参数时，默认使用内置的 HTML 文件，它来自 `assets/under-attack.html`。
 
 :::
 
@@ -392,3 +415,31 @@ server {
 
 * `general`: 表示所有基于黑名单的检测项目触发后返回的 HTTP 状态码。
 * `cc_deny`：表示 CC 防护触发后返回的 HTTP 状态码。
+
+::: warning 最新的 Current 版本中的变化
+
+此配置从 `v10.0.0` 开始被移除，相关的功能移动到配置 [waf_action](#waf-action)。
+
+:::
+
+
+## `waf_action`
+
+* 配置语法: waf_action \[blacklist=*action*\] \[cc_deny=*action*\] \[modsecurity=*action*\] \[verify_bot=*action*\] \[zone=*name:tag*\]
+* 默认配置: waf_action *blacklist=403* *cc_deny=503* *modsecurity=follow* *verify_bot=403*
+* 配置段: http, server, location
+
+
+此配置用于设置拦截一个请求时的动作，`action` 表示具体的动作，可以是以下值。
+
+* `4xx | 5xx`：表示返回 HTTP 状态码。
+* `CAPTCHA`：表示启用验证码进行验证，只有通过验证才解除拉黑。同时，你必须设置 [waf_captcha](#waf-captcha)。
+* `follow`：尊重 ModSecurity 规则的动作，仅可用于参数 `modsecurity`。
+
+参数说明：
+
+* `blacklist`：表示所有基于黑名单的规则，比如 IP 黑名单、User-Agent 黑名单、URL 黑名单等。
+* `cc_deny`: CC 防护。
+* `modsecurity`：ModSecurity 规则。
+* `verify_bot`：友好爬虫验证。
+* `zone`：设置用于记录必要信息的共享内存，当且仅当某个 `action` 为 `CAPTCHA` 时才需要设置。
