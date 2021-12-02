@@ -15,11 +15,16 @@ IP 检查和 CC 防御花费常数时间，其它的检查花费 `O(nm)` 的时�
 LRU
 
 
-## ngx_http_access_module
+## 模块的内置变量与指令 `if`
+
+简而言之，由于 NGINX 的状态机模型，你无法将本模块的任何内置变量（如 `$waf_rule_type`）用于指令 `if`，但是指令 `access_log` 的参数 `if` 除外。
+
+
+## `ngx_http_access_module`
 
 当本模块与 `ngx_http_access_module` 一起使用时，`ngx_http_access_module` 会先于本模块运行。
 
-#
+
 # post检测失效
 
 本模块出于性能考虑只会在 Post 请求体在内存中时检查，若不在内存中则跳过检查。

@@ -15,7 +15,12 @@ IP inspection and CC defense take constant time, other inspections take `O(nm)`,
 LRU
 
 
-## ngx_http_access_module
+## Embedded variables and directive `if`
+
+In short, due to NGINX's state machine model, you cannot use any embedded variables from this module (such as `$waf_rule_type`) for the directive `if`, except for the parameter `if` of the directive `access_log`.
+
+
+## `ngx_http_access_module`
 
 When this module is used with `ngx_http_access_module`, `ngx_http_access_module` will run before this module.
 

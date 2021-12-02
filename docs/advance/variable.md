@@ -9,6 +9,12 @@ When writing `nginx.conf`, some variables are inevitably needed. For example, `$
 
 This module adds several available variables.
 
+::: warning CAN NOT BE USED FOR DIRECTIVE `if`
+
+See [FAQ](/guide/faq.md#embedded-variables-and-directive-if).
+
+:::
+
 ## `$waf_log`
 
 Not an empty string if the firewall is checked in this request, otherwise an empty string. This variable is mainly used in the directive `access_log`, see [Customised Log Format](log.md#customised-log-format).
