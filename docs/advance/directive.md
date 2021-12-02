@@ -13,7 +13,7 @@ lang: en
 
 Whether to enable this module.
 
-## `waf_zone`
+## `waf_zone` <Badge text=">=v10.0.0" type="tip"/>
 
 * syntax: waf_zone \<name=*zone_name*\> \[size=*5m*\]
 * default: —

@@ -13,7 +13,7 @@ lang: zh-CN
 
 是否启用本模块。
 
-## `waf_zone`
+## `waf_zone` <Badge text=">=v10.0.0" type="tip"/>
 
 * 配置语法: waf_zone \<name=*zone_name*\> \[size=*5m*\]
 * 默认配置：——
