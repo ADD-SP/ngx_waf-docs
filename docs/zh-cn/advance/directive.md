@@ -443,3 +443,13 @@ server {
 * `modsecurity`：ModSecurity 规则。
 * `verify_bot`：友好爬虫验证。
 * `zone`：设置用于记录必要信息的共享内存，当且仅当某个 `action` 为 `CAPTCHA` 时才需要设置。
+
+
+## `waf_block_page`
+
+* 配置语法: waf_block_page \< *default* | *path/to/file.html* \>
+* 默认配置: ——
+* 配置段: http, server, location
+
+
+用于设置当请求被拦截时返回的页面，`default` 为一个内置的 HTML 文件，它来自 `assets/block.html`。

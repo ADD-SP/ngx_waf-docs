@@ -443,3 +443,13 @@ parameters:
 * `zone`：Set the shared memory used to record the necessary information, if and only if an `action` is `CAPTCHA`.
 
 
+## `waf_block_page`
+
+* syntax: waf_block_page \< *default* | *path/to/file.html* \>
+* default: ——
+* context: http, server, location
+
+
+Used to set the page returned when a request is blocked, `default` is a built-in HTML file from `assets/block.html`.
+
+
