@@ -31,6 +31,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [10.0.1] - 2021-12-05 UTC+0800
+
+### Added
+
+* Added two Easter eggs, which you can find clues in the documentation. These two eggs are not triggered automatically and need to be enabled manually.
+
+### Fixed
+
+* All parameters of the directive `waf_mode` corresponding to the request method are not working.
+
+
+***
+
 ## [10.0.0] - 2021-11-30 UTC+0800
 
 ### Added

@@ -32,6 +32,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [6.1.7] - 2021-12-05 UTC+0800
+
+### Fixed
+
+* All parameters of the directive `waf_mode` corresponding to the request method are not working.
+
+
+***
+
 ## [6.1.6] - 2021-10-10 UTC+0800
 
 ### Fixed

@@ -87,6 +87,7 @@ Specify the working mode of the firewall, specifying at least one mode and up to
 * STATIC: working mode for static sites, equivalent to `HEAD GET IP URL UA CC CACHE`.
 * DYNAMIC: working mode for dynamic sites, equivalent to `HEAD GET POST IP URL ARGS UA RBODY COOKIE CC CACHE LIB-INJECTION-SQLI`.
 * FULL: Enable all modes.
+* \[DATA EXPUNGED\]: This mode \[DATA EXPUNGED\].
 
 You can turn off a mode by prefixing `mode_type` with the prefix `!` to turn off a mode.
 The following is an example of using the standard working mode, but without inspecting the User-Agent.
@@ -450,6 +451,6 @@ parameters:
 * context: http, server, location
 
 
-Used to set the page returned when a request is blocked, `default` is a built-in HTML file from `assets/block.html`.
-
+Used to set the page returned when a request is blocked, `default` is a built-in HTML file from `assets/block.html`, 
+\[DATA EXPUNGED\] is \[DATA EXPUNGED\].
 

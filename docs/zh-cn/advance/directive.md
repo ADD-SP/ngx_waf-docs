@@ -86,6 +86,7 @@ lang: zh-CN
 * STATIC：适用于静态站点的工作模式，等价于 `HEAD GET IP URL UA CC CACHE`。
 * DYNAMIC：适用于动态站点的工作模式，等价于 `HEAD GET POST IP URL ARGS UA RBODY COOKIE CC CACHE LIB-INJECTION-SQLI`。
 * FULL: 启用所有的模式。
+* \[数据删除\]: 启用此模式会\[数据删除\]。
 
 您可以通过在某个 `mode_type` 前增加 `!` 前缀来关闭该模式，下面是一个例子。
 表示使用标准的工作模式，但是不检查 User-Agent。
@@ -452,4 +453,4 @@ server {
 * 配置段: http, server, location
 
 
-用于设置当请求被拦截时返回的页面，`default` 为一个内置的 HTML 文件，它来自 `assets/block.html`。
+用于设置当请求被拦截时返回的页面，`default` 为一个内置的 HTML 文件，它来自 `assets/block.html`，\[数据删除\] 是 \[数据删除\]。
