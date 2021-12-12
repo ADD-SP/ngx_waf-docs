@@ -270,7 +270,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
         make
         git clone https://github.com/libinjection/libinjection.git inc/libinjection
         cd /www/server/nginx/src
-        git clone https://github.com/troydhanson/uthash.git uthash
+        git clone https://github.com/troydhanson/uthash.git inc/uthash
         ```
     * 前置脚本（Current 版）：
         ```shell
@@ -281,7 +281,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
         cp -r ngx_waf /usr/local/src/ngx_waf
         cd ngx_waf
         git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson
-        git clone -b v2.3.0 https://github.com/troydhanson/uthash.git uthash
+        git clone -b v2.3.0 https://github.com/troydhanson/uthash.git lib/uthash
         cd /www/server/nginx/src
         
         ```
