@@ -48,6 +48,7 @@ http {
 
 ```nginx
 http {
+    waf_zone name=waf size=20m;
     ...
     server {
         ...
@@ -62,7 +63,7 @@ http {
 
         # CC defense parameter, 1000 requests per minute limit, 
         # block the corresponding ip for 60 minutes after exceeding the limit.
-        waf_cc_deny on rate=1000r/m duration=60m;
+        waf_cc_deny on rate=1000r/m duration=60m zone=waf:cc;
 
         # Cache detection results for up to 50 detection targets, 
         # effective for all detections 

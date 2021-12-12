@@ -47,6 +47,8 @@ http {
 
 ```nginx
 http {
+    # 声明一块共享内存
+    waf_zone name=waf size=20m;
     ...
     server {
         ...
@@ -60,7 +62,7 @@ http {
         waf_mode STD;
 
         # CC 防御参数，1000 每分钟请求次数上限，超出上限后封禁对应 ip 60 分钟。
-        waf_cc_deny on rate=1000r/m duration=60m;
+        waf_cc_deny on rate=1000r/m duration=60m  zone=waf:cc;
 
         # 最多缓存 50 个检测目标的检测结果，对除了 IP 黑白名单检测、CC 防护和 POST 检测以外的所有检测生效。
         waf_cache on capacity=50;
