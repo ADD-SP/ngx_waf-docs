@@ -191,13 +191,17 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 1. 在 shell 中运行命令
     ```shell
     # Centos7
-    yum update && yum install -y flex bison libcurl libcurl-devel git
+    yum update
+    yum install libtool
+    yum install https://archives.fedoraproject.org/pub/archive/fedora/linux/updates/23/x86_64/b/bison-3.0.4-3.fc23.x86_64.rpm
+    yum install gcc-c++ flex bison yajl yajl-devel curl-devel curl GeoIP-devel doxygen zlib-devel pcre-devel git libcurl libcurl-devel
     cd /usr/local/src
     git clone https://github.com/jedisct1/libsodium.git --branch stable
     cd libsodium
     ./configure --prefix=/usr/local/libsodium --with-pic
     make -j$(nproc)
     make install
+    
     # 如果你使用 Current 版本请添加这些代码
     # 安装 libmaxminddb
     cd /usr/local/src
