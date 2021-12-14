@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* You can set the command `waf` to ` bypass`, in which case no requests will be intercepted, but ngx_waf will still do the detection and logging.
+* You can set the directive `waf` to ` bypass`, in which case no requests will be intercepted, but ngx_waf will still do the detection and logging.
 
 * The directive `waf_verify_bot` has a new parameter `SogouSpider`, which is used to verify if it is a Sogou crawler.
 
