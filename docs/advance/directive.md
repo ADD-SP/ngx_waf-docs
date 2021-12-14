@@ -7,11 +7,13 @@ lang: en
 
 ## `waf`
 
-* syntax: waf \<*on* | *off*\>
+* syntax: waf \<*on* | *off* | *bypass* \>
 * default: waf *off*
 * context: http, server, location
 
-Whether to enable this module.
+* on: enable
+* off: disable
+* bypass: only inspect and record logs, without blocking any requests.
 
 ## `waf_zone` <Badge text=">=v10.0.0" type="tip"/>
 
@@ -297,7 +299,7 @@ Don't forget to fill in the `sitekey` in the HTML file.
 ## `waf_verify_bot` <Badge text="Latest Current version only" type="tip"/>
 
 * syntax: waf_verify_bot \<*off* | *on* | *strict*\> \[*who*\] ...
-* default: waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot*
+* default: waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot* *SogouSpider*
 * context: http, server, location
 
 Verify friendly crawlers, such as GoogleBot.
@@ -306,7 +308,7 @@ If the first parameter is `on` then all subsequent checks will be stopped and th
 
 If the first parameter is `strict`, then if the User-Agent of a request is correct, but the IP address is incorrect, it will be blocked (with false positives).
 
-* `who`: the name of the crawler, values include `GoogleBot`, `BingBot`, `BaiduSpider` and `YandexBot`. If not specified, the default is all.
+* `who`: the name of the crawler, values include `GoogleBot`, `BingBot`, `BaiduSpider`, `YandexBot` and `SogouSpider`. If not specified, the default is all.
 
 ::: tip HOW IT WORKS?
 
@@ -314,8 +316,9 @@ If the first parameter is `strict`, then if the User-Agent of a request is corre
 * [Googlebot Verification | Google Search Central | Google Developers](https://developers.google.com/search/docs/advanced/crawling/verifying-googlebot)
 * [Which Crawlers Does Bing Use? - Bing Webmaster Tools](https://www.bing.com/webmasters/help/which-crawlers-does-bing-use-8c184ec0)
 * [How to Verify Bingbot](https://www.bing.com/webmasters/help/how-to-verify-bingbot-3905dc26)
-* [Baidu User Service Center - Webmaster Platform](https://help.baidu.com/question?prod_id=99&class=0&id=3001)
+* [百度用户服务中心-站长平台](https://help.baidu.com/question?prod_id=99&class=0&id=3001)
 * [How to check that a robot belongs to Yandex](https://yandex.com/support/webmaster/robot-workings/check-yandex-robots.html)
+* [搜狗资源平台_公平开放的交流平台](https://zhanzhang.sogou.com/index.php/help/spider)
 
 :::
 

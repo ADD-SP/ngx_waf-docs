@@ -7,11 +7,13 @@ lang: zh-CN
 
 ## `waf`
 
-* 配置语法: waf \<*on* | *off*\>
+* 配置语法: waf \<*on* | *off* | *bypass* \>
 * 默认配置：waf *off*
 * 配置段: http, server, location
 
-是否启用本模块。
+* on: 开启防火墙。
+* off: 关闭防火墙。
+* bypass: 仅检测并记录日志，不拦截任何请求。
 
 ## `waf_zone` <Badge text=">=v10.0.0" type="tip"/>
 
@@ -297,7 +299,7 @@ server {
 ## `waf_verify_bot` <Badge text="仅限最新的 Current 版本" type="tip"/>
 
 * 配置语法: waf_verify_bot \<*off* | *on* | *strict*\> \[*who*\] ...
-* 默认配置：waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot*
+* 默认配置：waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot* *SogouSpider*
 * 配置段: http, server, location
 
 验证友好的爬虫，比如百度蜘蛛。
@@ -306,7 +308,7 @@ server {
 
 如果第一个参数是 `strict`，则如果某个请求的 User-Agent 正确，但是 IP 地址不正确则会被拦截（有误报）。
 
-* `who`：爬虫的名称，取值包括 `GoogleBot`、`BingBot`、`BaiduSpider` 和 `YandexBot`。如不指定则默认为全部。
+* `who`：爬虫的名称，取值包括 `GoogleBot`、`BingBot`、`BaiduSpider`、 `YandexBot` 和 `SogouSpider`。如不指定则默认为全部。
 
 ::: tip 工作原理
 
@@ -316,6 +318,7 @@ server {
 * [How to Verify Bingbot](https://www.bing.com/webmasters/help/how-to-verify-bingbot-3905dc26)
 * [百度用户服务中心-站长平台](https://help.baidu.com/question?prod_id=99&class=0&id=3001)
 * [How to check that a robot belongs to Yandex](https://yandex.com/support/webmaster/robot-workings/check-yandex-robots.html)
+* [搜狗资源平台_公平开放的交流平台](https://zhanzhang.sogou.com/index.php/help/spider)
 
 :::
 
