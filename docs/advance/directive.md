@@ -11,6 +11,8 @@ lang: en
 * default: waf *off*
 * context: http, server, location
 
+enable, disable or bypass.
+
 * on: enable
 * off: disable
 * bypass: only inspect and record logs, without blocking any requests.

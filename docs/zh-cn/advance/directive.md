@@ -11,6 +11,8 @@ lang: zh-CN
 * 默认配置：waf *off*
 * 配置段: http, server, location
 
+开启、关闭或仅检测。
+
 * on: 开启防火墙。
 * off: 关闭防火墙。
 * bypass: 仅检测并记录日志，不拦截任何请求。
@@ -299,7 +301,7 @@ server {
 ## `waf_verify_bot` <Badge text="仅限最新的 Current 版本" type="tip"/>
 
 * 配置语法: waf_verify_bot \<*off* | *on* | *strict*\> \[*who*\] ...
-* 默认配置：waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot* *SogouSpider*
+* 默认配置：waf_verify_bot *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot* *SogouSpider*
 * 配置段: http, server, location
 
 验证友好的爬虫，比如百度蜘蛛。
