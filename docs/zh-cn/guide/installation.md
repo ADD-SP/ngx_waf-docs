@@ -213,6 +213,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     make -j$(nproc)
     make install
     # 安装 ModSecurity v3
+    cd /usr/local/src
     git clone -b v3.0.5 https://github.com/SpiderLabs/ModSecurity.git
     cd ModSecurity
     chmod +x build.sh
@@ -240,7 +241,6 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 3. 编辑文件 `/etc/profile`，在末尾追加下列内容。
     ```shell
     export LIB_UTHASH=/www/server/nginx/src/uthash
-    export TEMP_CC_OPT='-std=gnu99 -Wno-sign-compare'
 
     # 如果操作系统的 Ubuntu 则不用写下面这两行
     export LIB_SODIUM=/usr/local/libsodium
@@ -261,7 +261,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     * 模块描述：方便且高性能的 Nginx 防火墙模块 
     * 模块参数：
         ```shell
-        --add-module=/www/server/nginx/src/ngx_waf --with-cc-opt=$TEMP_CC_OPT
+        --add-module=/www/server/nginx/src/ngx_waf --with-cc-opt=-std=gnu99
         ```
     * 前置脚本（LTS 版）：
         ```shell
