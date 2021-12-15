@@ -299,7 +299,7 @@ Don't forget to fill in the `sitekey` in the HTML file.
 ## `waf_verify_bot` <Badge text="Latest Current version only" type="tip"/>
 
 * syntax: waf_verify_bot \<*off* | *on* | *strict*\> \[*who*\] ...
-* default: waf_captcha *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot* *SogouSpider*
+* default: waf_verify_bot *off* *GoogleBot* *BingBot* *BaiduSpider* *YandexBot* *SogouSpider*
 * context: http, server, location
 
 Verify friendly crawlers, such as GoogleBot.
