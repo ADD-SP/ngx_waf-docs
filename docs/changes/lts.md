@@ -32,6 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [6.1.8] - 2022-01-07 UTC+0800
+
+### Fixed
+
+* Memory leak.
+
+***
+
 ## [6.1.7] - 2021-12-05 UTC+0800
 
 ### Fixed
