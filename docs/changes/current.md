@@ -31,6 +31,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [10.1.1] - 2022-01-07 UTC+0800
+
+### Added
+
+* PCRE2 library support. 
+
+### Fixed
+
+* Memory leak.
+
+* CAPTCHA and Under-Attack-Mode sometimes cause infinite page refreshes.
+
+
+***
+
 ## [10.1.0] - 2021-12-14 UTC+0800
 
 ### Added
