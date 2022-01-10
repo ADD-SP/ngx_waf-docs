@@ -203,24 +203,15 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     make install
     
     # 如果你使用 Current 版本请添加这些代码
-    # 安装 libmaxminddb
-    cd /usr/local/src
-    wget https://github.com/maxmind/libmaxminddb/releases/download/1.6.0/libmaxminddb-1.6.0.tar.gz -O libmaxminddb.tar.gz
-    mkdir libmaxminddb
-    tar -zxf "libmaxminddb.tar.gz" -C libmaxminddb --strip-components=1
-    cd libmaxminddb
-    ./configure --prefix=/usr/local/libmaxminddb
-    make -j$(nproc)
-    make install
     # 安装 ModSecurity v3
     cd /usr/local/src
-    git clone -b v3.0.5 https://github.com/SpiderLabs/ModSecurity.git
+    git clone -b v3.0.6 https://github.com/SpiderLabs/ModSecurity.git
     cd ModSecurity
     chmod +x build.sh
     ./build.sh
     git submodule init
     git submodule update
-    ./configure --prefix=/usr/local/modsecurity --with-maxmind=/usr/local/libmaxminddb
+    ./configure --prefix=/usr/local/modsecurity
     make -j$(nproc)
     make install
 
