@@ -7,6 +7,18 @@ lang: zh-CN
 
 升级模块均需要按照[安装指南](/zh-cn/guide/installation.md)中的说明重新安装。
 
+## 从 `10.x.x` 升级到 `11.x.x`
+
+1. 在规则目录下创建下列空文件。
+    * header
+    * white-header
+    * white-args
+    * white-cookie
+    * white-user-agent
+    * white-post
+2. 指令 `waf_priority` 增加了很多参数，请参照文档修改，并且所有的参数不再需要用引号包裹。
+3. 指令 `waf_cache` 的参数 `capacity` 的含义变为缓存的内存用量上限，注意修改。
+
 ## 从 `9.x.x` 升级到 `10.x.x`
 
 1. 如果你使用了指令 `waf_http_status`，请根据文档将其替换为指令 `waf_action`。

@@ -32,6 +32,51 @@ lang: zh-CN
 
 ***
 
+
+## [11.0.0]
+
+### **注意**
+
+**本次更新不保证旧版本配置文件的兼容性，升级时请参考文档中的跨版本升级指南。**
+
+### 新增
+
+* 新指令 `waf_sysguard`，当系统的负载或内存用量过高时通过特定措施缓解。
+
+* 指令 `waf_under_attack` 和 `waf_captcha` 新增了参数 `cookie_secret`，用于共享两个 ngx_waf 实例的 cookie。
+
+* 新增了下列基于正则的规则类型：
+    * header：请求头黑名单。
+    * white-header：请求头白名单。
+    * white-args：查询字符串白名单。
+    * white-cookie：cookie 白名单。
+    * white-user-agent：user-agent 白名单。
+    * white-post：请求体白名单。
+
+* 指令 `waf_action` 新增了参数 `sysguard_load`、`sysguard_mem` 和 `sysguard_swap`。
+
+* 指令 `waf_priority` 新增了参数 `W-ARGS`、`W-UA`、`W-COOKIE`、`W-POST`、`W-HEADER` 和 `HEADER`。
+
+* 指令 `waf_action` 支持了新的动作 —— 内部重定向。
+
+### 变动
+
+* 指令 `waf_cache` 的参数 `capacity` 的含义变为缓存占用的内存上限。
+
+* 指令 `waf_priority` 的参数不再需要用引号包裹。
+
+* 优化了 “友好爬虫验证” 的性能，即缓存反向 DNS 的查询结果。
+
+* 优化了 CAPTCHA 的性能，即异步执行二次验证。
+
+* 优化了内存整理时的性能。
+
+### 修复
+
+* 内存泄漏。
+
+***
+
 ## [10.1.1] - 2022-01-07 UTC+0800
 
 ### 新增

@@ -7,6 +7,18 @@ lang: en
 
 To upgrade the module, you need to reinstall it according to the instructions in [installation guide](/guide/installation.md).
 
+## Upgrade from `10.x.x` to `11.x.x`
+
+1. Create the following empty file in the rules directory.
+    * header
+    * white-header
+    * white-args
+    * white-cookie
+    * white-user-agent
+    * white-post
+2. The directive `waf_priority` has a lot of new parameters, please refer to the documentation to change them, and all parameters no longer need to be wrapped in quotes.
+3. The meaning of the parameter `capacity` in the directive `waf_cache` has been changed to the maximum of memory that can be used for caching.
+
 ## Upgrade from `9.x.x` to `10.x.x`
 
 1. If you use the directive `waf_http_status`, replace it with the directive `waf_action` according to the documentation.

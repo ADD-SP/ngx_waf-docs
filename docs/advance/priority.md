@@ -9,28 +9,52 @@ There are many inspection process in this module, so it is important to specify 
 
 The following is a list of all the tests in order of priority, from top to bottom.
 
-1. IP whitelist inspection
-2. IP blacklist inspection
-3. Friendly crawler verification <Badge text="Latest Current version only" type="tip"/>
-4. CC protection
-5. CAPTCHA <Badge text="Latest Current version only" type="tip"/>
-6. Under attack mode
-7. Url whitelist inspection
-8. Url blacklist inspection
-9. Get parameter blacklist inspection
-10. User-Agent blacklist inspection
-11. Referer whitelist inspection
-12. Referer blacklist inspection
-13. Cookie blacklist inspection
-14. Post request body blacklist
-15. ModSecurity
+## For LTS version
 
+1. IP whitelist
+2. IP Blacklisting
+3. CC Defense
+4. Under-Attack
+5. Url Whitelisting
+6. Url Blacklisting
+7. Query-String Blacklist
+8. User-Agent Blacklist
+9. Referer Whitelist
+10. Referer Blacklist
+11. Cookie Blacklist
+12. Request-Body Blacklist
 
 ::: tip Change priority
 
 You can modify the priority through the configuration file, but the priority of the POST request body detection is not allowed to be modified, it will always have the lowest priority. See [waf_priority](directive.md#waf-priority) for details
 
 :::
+
+
+## For `Current` version
+
+1. IP whitelist
+2. System Protection (SysGuard)
+3. IP Blacklisting
+4. Friendly crawler verification
+5. Captcha (CAPTCHA)
+6. Under-Attack mode
+7. Url Whitelist
+8. Query-String Whitelist
+9. User-Agent Whitelist
+10. Referer Whitelist
+11. Cookie Whitelist
+12. Request-Header Whitelist
+13. Request-Body whitelist
+14. CC protection
+15. Url Blacklist
+16. Query-String blacklist
+17. User-Agent Blacklist
+18. Referer Blacklist
+19. Cookie Blacklist
+20. Request-Header blacklist
+21. Request-Body blacklist
+22. ModSecurity rules
 
 ::: tip CHANGES IN LATEST 'Current' VERSION
 

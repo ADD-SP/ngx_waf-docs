@@ -187,9 +187,11 @@ So please set it reasonably according to your actual needs.
 
 ::: tip CHANGES IN LATEST 'Current' VERSION
 
-* syntax: waf_cache \<*off* | *on*\> \[capacity=*50*\]
-* default: waf_cache *off* capacity=*50*
+* syntax: waf_cache \<*off* | *on*\> \[capacity=*20m*\]
+* default: waf_cache *off*
 * context: server, location
+
+The parameter `capacity` indicates the maximum **total** amount of memory used by **all** inspections.
 
 :::
 
@@ -267,7 +269,7 @@ server {
 
 ## `waf_captcha` <Badge text="Latest Current version only" type="tip"/>
 
-* syntax: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2:checkbox* | *reCAPTCHAv2:invisible* | *reCAPTCHAv3*\> \[file=*/full/path*\] \[sitekey=*your_sitekey*\] \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\] \[max_fails=*times:duration*\] \[zone=*name:tag*\]
+* syntax: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2:checkbox* | *reCAPTCHAv2:invisible* | *reCAPTCHAv3*\> \[file=*/full/path*\] \[sitekey=*your_sitekey*\] \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\] \[max_fails=*times:duration*\] \[zone=*name:tag*\] \[cookie_secret=*random_str*\]
 * default: waf_captcha off
 * context: http, server, location
 
@@ -286,6 +288,7 @@ Use CAPTCHA for human identification of the client.
 * `verify`: the url used by the captcha to submit the token to the backend, defaults to `/captcha`.
 * `max_fails`: The maximum number of times the CAPTCHA can be refreshed/tried, beyond which the corresponding IP is blacked out for a period of time. For example, `max_fails=20:5m` means that the IP will be blacked out for 5 minutes after 20 consecutive refreshes/tries. This is useful when you are using billing CAPTCHA. When you set this parameter, you must also set the parameter `zone`.
 * `zone`: Set the shared memory used to record the number of CAPTCHA tries, this parameter is required if and only if parameter `max_fails` is set.
+* `cookie_secret`: can be set to a string of any length, or randomly generated if not specified. When two instances of ngx_waf have the same `cookie_secret` set, their cookies can be shared.
 
 
 You can refer to the use case in [Enable Captcha | Best Practices](/practice/enable-captcha.md).
@@ -356,12 +359,13 @@ So we changed the implementation so that we return the specified page by changin
 
 We also added the response header `Cache-Control: no-store` to avoid the impact of caching.
 
-* synyax: waf_under_attack \<*on* | *off*\> \[file=*full_path*\]
+* synyax: waf_under_attack \<*on* | *off*\> \[file=*full_path*\] \[cookie_secret=*random_str*\]
 * default: waf_under_attack *off*
 * context: http, server, location
 
 * Removed the parameter `uri`.
 * Added parameter `file`, the value of this parameter should be the absolute path to an HTML file, e.g. `file=/path/to/under-attack.html`. This HTML has only one function, which is to refresh automatically after five seconds. When you omit this parameter, the default is to use the built-in HTML file, which comes from `assets/under-attack.html`.
+* Added parameter `cookie_secret`, it can be set to a string of any length, or randomly generated if not specified. When two instances of ngx_waf have the same `cookie_secret` set, their cookies can be shared.
 
 :::
 
@@ -396,18 +400,42 @@ Set the priority of each inspection process, except for POST detection, which al
 
 ::: tip CHANGES IN LATEST 'Current' VERSION
 
-* default: waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE POST MODSECURITY"
+* syntax: waf_priority \<*str*\> ...
+* default: waf_priority W-IP SYSGUARD IP VERIFY-BOT CAPTCHA UNDER-ATTACK 
+                        W-URL W-ARGS W-UA W-REFERER W-COOKIE W-HEADER W-POST
+                        CC
+                        URL ARGS UA REFERER COOKIE HEADER POST MODSECURITY
+* context: http, server, location
 
 ***
 
 * `VERIFY-BOT`: friendly crawler verification.
 * `CAPTCHA`: Captcha.
-* `POST`: Request body blacklist.
-* `ModSecurity`.
+* `POST`: Reqest-Body blacklist.
 * `ADV`: Removed.
+* `MODSECURITY`: Modsecurty rule.
+* `W-ARGS`: Query-String whitelist.
+* `W-UA`: User-Agent whitelist.
+* `W-COOKIE`: Cookie whitelist.
+* `W-POST`: Reqest-Body whitelist.
+* `W-HEADER`: Reqest-HEADER whitelist.
+* `HEADER`: Reqest-HEADER blacklist
 
 :::
 
+
+## `waf_sysguard`
+
+* syntax: waf_sysguard \<*on* | *off*\> \[load=*float*\] \[mem=*ratio*\] \[swap=*ratio*\] \[interval=*1s*\]
+* default: waf_sysguard off
+* context: http, server, location
+
+This directive is used to set the system protection related parameters, the default returns 503 status code when the threshold value is exceeded, or you can change this behavior with the directive [waf_action](#waf_action).
+
+* `load`: threshold value of system load to trigger system protection, **system load is not CPU usage**.
+* `mem`: the memory (not swap) usage that triggers system protection, e.g. `0.8` means triggered when memory usage exceeds 80%.
+* `mem`: the swap memory usage that triggers system protection, e.g. `0.8` means triggered when swap memory usage exceeds 80%.
+* `interval`: how often to update the system status, default is one second.
 
 ## `waf_http_status`
 
@@ -429,8 +457,8 @@ This directive has been removed from `v10.0.0` and the associated features moved
 
 ## `waf_action`
 
-* syntax: waf_action \[blacklist=*action*\] \[cc_deny=*action*\] \[modsecurity=*action*\] \[verify_bot=*action*\] \[zone=*name:tag*\]
-* default: waf_action *blacklist=403* *cc_deny=503* *modsecurity=follow* *verify_bot=403*
+* syntax: waf_action \[blacklist=*action*\] \[cc_deny=*action*\] \[modsecurity=*action*\] \[verify_bot=*action*\] \[sysguard_load=*action*\] \[sysguard_mem=*action*\] \[sysguard_swap=*action*\] \[zone=*name:tag*\]
+* default: waf_action *blacklist=403* *cc_deny=503* *modsecurity=follow* *verify_bot=403* *sysguard_load=503* *sysguard_mem=503* *sysguard_swap=503*
 * context: http, server, location
 
 
@@ -439,6 +467,7 @@ This directive is used to set the action to be taken when blocking a request. `a
 * `4xx | 5xx`：HTTP response code.
 * `CAPTCHA`：Use the CAPTCHA to challenge.
 * `follow`：Follow the action of Modsecurity's rule, only for parameter `modsecurity`.
+* `path`: indicates an internal redirect to the specified `path`, e.g. `/index.html`.
 
 parameters:
 
@@ -446,6 +475,7 @@ parameters:
 * `cc_deny`: CC protection.
 * `modsecurity`：ModSecurity's rules.
 * `verify_bot`：[waf_verify_bot](#waf-verify-bot).
+* `sysguar_*`: Rules related to system protection (SysGuard).
 * `zone`：Set the shared memory used to record the necessary information, if and only if an `action` is `CAPTCHA`.
 
 

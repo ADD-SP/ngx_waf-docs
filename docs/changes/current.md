@@ -31,6 +31,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [11.0.0]
+
+### **NOTE**
+
+**This update does not guarantee the compatibility of old version configuration files, please refer to the cross-version upgrade guide in the documentation when upgrading. **
+
+### Added
+
+* New directive `waf_sysguard` to mitigate by specific measures when the system's load or memory usage is too high.
+
+* The directives `waf_under_attack` and `waf_captcha` have a new parameter `cookie_secret` for sharing cookies between two ngx_waf instances.
+
+* The following new regularity-based rule types have been added.
+    * header: request-header blacklist.
+    * white-header: request header whitelist.
+    * white-args: query string whitelist.
+    * white-cookie: cookie whitelist.
+    * white-user-agent: user-agent whitelist.
+    * white-post: request body whitelist.
+
+* The directive `waf_action` has new parameters `sysguard_load`, `sysguard_mem` and `sysguard_swap`.
+
+* The directive `waf_priority` has new parameters `W-ARGS`, `W-UA`, `W-COOKIE`, `W-POST`, `W-HEADER`, and `HEADER`.
+
+* The directive `waf_action` now supports a new action -- internal redirection.
+
+### Changed
+
+* The meaning of the parameter `capacity` of the directive `waf_cache` has been changed to the upper limit of memory used by the cache.
+
+* The argument to the directive `waf_priority` no longer needs to be wrapped in quotes.
+
+* Improve performance of "friendly crawler validation", which caches reverse DNS query results.
+
+* Improve performance of CAPTCHA, which performs secondary validation asynchronously.
+
+* Improve performance during memory collation.
+
+### Fixed
+
+* Memory leak.
+
+
+***
+
 ## [10.1.1] - 2022-01-07 UTC+0800
 
 ### Added

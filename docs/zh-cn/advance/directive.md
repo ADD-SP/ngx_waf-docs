@@ -183,9 +183,11 @@ waf_mode !UA STD;
 
 ::: tip 最新的 Current 版本中的变化
 
-* 配置语法: waf_cache \<*off* | *on*\> \[capacity=*50*\]
-* 默认配置：waf_cache *off* capacity=*50*
+* 配置语法: waf_cache \<*off* | *on*\> \[capacity=*20m*\]
+* 默认配置：waf_cache *off*
 * 配置段: server, location
+
+参数 `capacity` 表示**所有**的检测项目最多**总共**占用多少内存。
 
 :::
 
@@ -265,7 +267,7 @@ server {
 
 ## `waf_captcha` <Badge text="仅限最新的 Current 版本" type="tip"/>
 
-* 配置语法: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2:checkbox* | *reCAPTCHAv2:invisible* | *reCAPTCHAv3*\> \[file=*/full/path*\] \[sitekey=*your_sitekey*\] \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\] \[max_fails=*times:duration*\] \[zone=*name:tag*\]
+* 配置语法: waf_captcha \<*on* | *off*\> \<prov=*hCaptcha* | *reCAPTCHAv2:checkbox* | *reCAPTCHAv2:invisible* | *reCAPTCHAv3*\> \[file=*/full/path*\] \[sitekey=*your_sitekey*\] \<secret=*your_secret*\> \[score=*0.5*\] \[expire=30m\] \[api=*uri*\] \[verify=*/captcha*\] \[max_fails=*times:duration*\] \[zone=*name:tag*\] \[cookie_secret=*random_str*\]
 * 默认配置：waf_captcha *off*
 * 配置段: server, location
 
@@ -284,6 +286,7 @@ server {
 * `verify`：验证码向后端提交 token 所用的 url，默认为 `/captcha`。
 * `max_fails`：验证码最大刷新/试错次数，超出这个次数拉黑对应的 IP 一段时间。例如 `max_fails=20:5m` 表示连续刷新/试错二十次后拉黑 5 分钟。当你使用计费的验证码时这很有用。当你设置了此参数，你必须同时设置参数 `zone`。
 * `zone`：设置用于记录验证码试错次数的共享内存，当且仅当参数 `max_fails` 被设置时才需要设置此参数。
+* `cookie_secret`：可设置为任意长度的字符串，如不指定则随机生成。当两个 ngx_waf 的实例配置了相同的 `cookie_secret` 时，它们的 Cookie 可以共用。
 
 
 你可以参考[开启验证码 | 最佳实践](/zh-cn/practice/enable-captcha.md)中的用例。
@@ -356,7 +359,7 @@ server {
 在 LTS 版本中我们通过重定向实现了该功能，但是许多原因（如缓存和 CDN）会导致重定向失败，或者不能正常验证 Cookie。
 所以我们修改了实现方式，我们通过修改响应体来返回指定的网页，这种方式不会导致 URI 的改变。
 
-* 配置语法: waf_under_attack \<*on* | *off*\> \[file=*full_path*\]
+* 配置语法: waf_under_attack \<*on* | *off*\> \[file=*full_path*\] \[cookie_secret=*random_str*\]
 * 默认配置：waf_under_attack *off*
 * 配置段: http, server, location
 
@@ -364,6 +367,7 @@ server {
 
 * 移除了参数 `uri`。
 * 增加了参数 `file`，该参数的值应该是一个 HTML 文件的绝对路径，如 `file=/path/to/under-attack.html`。这个 HTML 只有一个功能，即五秒后自动刷新。当你省略此参数时，默认使用内置的 HTML 文件，它来自 `assets/under-attack.html`。
+* 增加了参数 `cookie_secret`，可设置为任意长度的字符串，如不指定则随机生成。当两个 ngx_waf 的实例配置了相同的 `cookie_secret` 时，它们的 Cookie 可以共用。
 
 :::
 
@@ -398,17 +402,42 @@ server {
 
 ::: tip 最新的 Current 版本中的变化
 
-* 默认配置：waf_priority "W-IP IP VERIFY-BOT CC CAPTCHA UNDER-ATTACK W-URL URL ARGS UA W-REFERER REFERER COOKIE POST MODSECURITY"
+* 配置语法: waf_priority \<*str*\> ...
+* 默认配置：waf_priority W-IP SYSGUARD IP VERIFY-BOT CAPTCHA UNDER-ATTACK 
+                        W-URL W-ARGS W-UA W-REFERER W-COOKIE W-HEADER W-POST
+                        CC
+                        URL ARGS UA REFERER COOKIE HEADER POST MODSECURITY
+* 配置段: http, server, location
 
 ***
 
 * `VERIFY-BOT`：友好爬虫验证。
 * `CAPTCHA`：验证码。
-* `POST`：请求体黑名单。
+* `POST`：Reqest-Body 黑名单。
 * `ADV`：已经移除。
-* `MODSECURITY`。
+* `MODSECURITY`：Modsecurty 规则。
+* `W-ARGS`：Query-String 白名单。
+* `W-UA`：User-Agent 白名单。
+* `W-COOKIE`：Cookie 白名单。
+* `W-POST`：Reqest-Body 白名单。
+* `W-HEADER`：Reqest-HEADER 白名单。
+* `HEADER`：Reqest-HEADER 黑名单
 
 :::
+
+
+## `waf_sysguard`
+
+* 配置语法: waf_sysguard \<*on* | *off*\> \[load=*float*\] \[mem=*ratio*\] \[swap=*ratio*\] \[interval=*1s*\]
+* 默认配置: waf_sysguard off
+* 配置段: http, server, location
+
+此指令用于设置系统保护相关的参数，当超出阈值时默认返回 503 状态码，也可以通过指令 [waf_action](#waf_action) 来改变这一行为。
+
+* `load`：触发系统保护的系统负载的阈值，**系统负载不是 CPU 的使用率**。
+* `mem`：触发系统保护的内存（不包含 swap）占用率，比如 `0.8` 表示内存占用超过 80% 时触发。
+* `mem`：触发系统保护的 swap 内存占用率，比如 `0.8` 表示 swap 内存占用超过 80% 时触发。
+* `interval`：多久更新一次系统状态，默认为一秒。
 
 
 ## `waf_http_status`
@@ -431,8 +460,8 @@ server {
 
 ## `waf_action`
 
-* 配置语法: waf_action \[blacklist=*action*\] \[cc_deny=*action*\] \[modsecurity=*action*\] \[verify_bot=*action*\] \[zone=*name:tag*\]
-* 默认配置: waf_action *blacklist=403* *cc_deny=503* *modsecurity=follow* *verify_bot=403*
+* 配置语法: waf_action \[blacklist=*action*\] \[cc_deny=*action*\] \[modsecurity=*action*\] \[verify_bot=*action*\] \[sysguard_load=*action*\] \[sysguard_mem=*action*\] \[sysguard_swap=*action*\] \[zone=*name:tag*\]
+* 默认配置: waf_action *blacklist=403* *cc_deny=503* *modsecurity=follow* *verify_bot=403* *sysguard_load=503* *sysguard_mem=503* *sysguard_swap=503*
 * 配置段: http, server, location
 
 
@@ -441,6 +470,7 @@ server {
 * `4xx | 5xx`：表示返回 HTTP 状态码。
 * `CAPTCHA`：表示启用验证码进行验证，只有通过验证才解除拉黑。同时，你必须设置 [waf_captcha](#waf-captcha)。
 * `follow`：尊重 ModSecurity 规则的动作，仅可用于参数 `modsecurity`。
+* `path`：表示内部重定向到指定的 `path`，比如 `/index.html`。
 
 参数说明：
 
@@ -448,6 +478,7 @@ server {
 * `cc_deny`: CC 防护。
 * `modsecurity`：ModSecurity 规则。
 * `verify_bot`：友好爬虫验证。
+* `sysguar_*`：系统保护相关的规则（SysGuard）。
 * `zone`：设置用于记录必要信息的共享内存，当且仅当某个 `action` 为 `CAPTCHA` 时才需要设置。
 
 
