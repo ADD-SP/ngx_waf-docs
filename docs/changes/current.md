@@ -31,6 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
+## [10.1.2] - 2022-07-09 UTC+0800
+
+### Fixed
+
+* compatible with `nginx-1.23.0`
+
+***
+
 ## [10.1.1] - 2022-01-07 UTC+0800
 
 ### Added
