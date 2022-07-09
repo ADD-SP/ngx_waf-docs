@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ***
 
-## [6.1.8] - 2022-07-09 UTC+0800
+## [6.1.9] - 2022-07-09 UTC+0800
 
 ### Fixed
 
