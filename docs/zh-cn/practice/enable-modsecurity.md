@@ -34,7 +34,7 @@ cp -r coreruleset/rules /etc/nginx/rules/modsecurity/owasp
 1. 编辑 `/etc/nginx/rules/modsecurity/modsecurity.conf`，将 `SecRuleEngine DetectionOnly` 修改为 `SecRuleEngine on`。
 2. 编辑 `/etc/nginx/rules/modsecurity/modsecurity.conf`，在文件末尾追加下列内容。
     ```
-    Include /usr/local/src/ngx_waf/assets/rules/crs-setup.conf
+    Include /etc/nginx/rules/modsecurity/crs-setup.conf
     Include /etc/nginx/rules/modsecurity/owasp/*.conf
     ```
 
