@@ -205,7 +205,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     # 如果你使用 Current 版本请添加这些代码
     # 安装 ModSecurity v3
     cd /usr/local/src
-    git clone -b v3.0.6 https://github.com/SpiderLabs/ModSecurity.git
+    git clone -b v3.0.8 https://github.com/SpiderLabs/ModSecurity.git
     cd ModSecurity
     chmod +x build.sh
     ./build.sh
@@ -288,7 +288,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
 
 ::: tip 报错了怎么办？
 
-你可以选择去 Github 提 issue 或者自己解决，编译安装第三方 nginx 模块就要有自己解决问题的就觉悟。
+你可以选择去 Github 提 issue 或者自己解决，编译安装第三方 nginx 模块就要有自己解决问题的觉悟。
 
 :::
 
