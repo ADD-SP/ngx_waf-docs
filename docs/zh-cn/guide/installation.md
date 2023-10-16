@@ -205,7 +205,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     # 如果你使用 Current 版本请添加这些代码
     # 安装 ModSecurity v3
     cd /usr/local/src
-    git clone -b v3.0.8 https://github.com/SpiderLabs/ModSecurity.git
+    git clone -b v3.0.10 https://github.com/SpiderLabs/ModSecurity.git
     cd ModSecurity
     chmod +x build.sh
     ./build.sh
@@ -275,7 +275,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
         rm -rf /usr/local/src/ngx_waf
         cp -r ngx_waf /usr/local/src/ngx_waf
         cd ngx_waf
-        git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson
+        git clone -b v1.7.16 https://github.com/DaveGamble/cJSON.git lib/cjson
         git clone -b v2.3.0 https://github.com/troydhanson/uthash.git lib/uthash
         cd /www/server/nginx/src
         
