@@ -10,8 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ::: tip What is a breaking change?
 
-* The original configuration file may not work, for example, if a directive item is removed or renamed.
-* It may be necessary to update the build environment, such as installing new dependencies.
+* The old configuration file may not work, for example, if a directive item is removed or renamed.
 
 :::
 
@@ -19,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
- 
+
 
 ### Removed
 
@@ -29,6 +28,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+
+***
+
+## [6.1.10] - 2025-01-25 UTC+0800
+
+### Fixed
+
+* Fix compile error caused by changed build process of [libinjection](https://github.com/libinjection/libinjection)
 
 ***
 

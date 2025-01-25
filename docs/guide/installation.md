@@ -10,13 +10,6 @@ Please read the [Version Description](version.md) first to pick the right versio
 
 nginx provides two ways to install modules, namely 'statically linked' and 'dynamically loaded', and the modules installed in each way are called 'static modules' and dynamic modules'.
 
-You can choose whether to use static or dynamic modules by running the script `assets/guide.sh`.
-
-```shell
-sh assets/guide.sh
-```
-
-
 ## Static Modules
 
 ::: warning NOTE

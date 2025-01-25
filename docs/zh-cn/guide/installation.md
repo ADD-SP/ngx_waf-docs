@@ -10,19 +10,6 @@ sidebarDepth: 3
 
 nginx 提供两种安装模块的方式，即「静态链接」和「动态加载」，通过两种方式安装的模块也分别称为「静态模块」和「动态模块」。
 
-你可以通过运行脚本 `assets/guide.sh` 来选择使用静态模块还是动态模块。
-
-```shell
-sh assets/guide.sh
-
-# It is recommended that you use dynamic modules.
-# 如果输出上面这行则建议使用动态模块。
-
-# It is recommended that you use static modules.
-# 如果输出上面这行则建议使用静态模块。
-```
-
-
 ## 静态模块
 
 ::: warning 注意
