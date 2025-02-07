@@ -93,56 +93,6 @@ cp objs/nginx /usr/local/nginx/sbin/nginx
 
 ## 动态模块
 
-### 下载预构建的模块
-
-您可以通过执行脚本 `assets/download.sh` 来下载动态模块。下面是一些用例。
-
-```shell
-# 用于 nginx-1.20.1 的 LTS 版的模块
-sh assets/download.sh 1.20.1 lts
-
-# 用于 nginx-1.21.1 的 LTS 版的模块
-sh assets/download.sh 1.21.1 lts
-
-# 用于 nginx-1.20.1 的最新版的模块
-sh assets/download.sh 1.20.1 current
-
-# 用于 nginx-1.21.1 的最新版的模块
-sh assets/download.sh 1.21.1 current
-```
-
-执行脚本后你会看到类似下面这样的输出。
-
-```
-checking for command ... yes
-checking for libc implementation ... yes
- + GNU C libary
-Pulling remote image addsp/ngx_waf-prebuild:ngx-1.21.1-module-beta-glibc
-......
-......
-......
-Download complete!
-```
-
-如果你看到 `Download complete!` 则说明下载成功，模块会被保存在当前目录下。
-你可以将其拷贝到一个目录下，然后在 `nginx.conf` 的顶部添加一行。
-
-```nginx
-load_module "/path/to/ngx_http_waf_module.so";
-```
-
-然后关闭 nginx 并运行 `nginx -t`。如果没有出错则说明模块被正常加载，反之则说明您的 nginx 不支持预构建的模块，请编译安装模块。
-
-
-::: tip 注意
-
-当我们更新了模块后，大约需要两个小时来编译和上传模块。
-
-:::
-
-
-### 编译动态模块
-
 编译安装动态模块并不需要重新编译整个 nginx，只需要重新编译所有的模块，所以
 速度相对静态模块快一些，这也是本文档推荐的方式。
 
@@ -188,7 +138,7 @@ load_module "/usr/local/nginx/modules/ngx_http_waf_module.so";
     ./configure --prefix=/usr/local/libsodium --with-pic
     make -j$(nproc)
     make install
-    
+
     # 如果你使用 Current 版本请添加这些代码
     # 安装 ModSecurity v3
     cd /usr/local/src

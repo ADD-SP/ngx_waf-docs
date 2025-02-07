@@ -98,57 +98,8 @@ If you do not want to not nginx when replacing binaries, you can refer to the [o
 
 ## Dynamic Modules
 
-### Downloading pre-built modules
-
-You can download dynamic modules by executing the script `assets/download.sh`. Here are some use cases.
-
-```shell
-# LTS module for nginx-1.20.1
-sh assets/download.sh 1.20.1 lts
-
-# LTS module for nginx-1.21.1
-sh assets/download.sh 1.21.1 lts
-
-# Current module for nginx-1.20.1
-sh assets/download.sh 1.20.1 current
-
-# Current module for nginx-1.21.1
-sh assets/download.sh 1.21.1 current
-```
-
-After executing the script you will see output like the following.
-
-```
-checking for command ... yes
-checking for libc implementation ... yes
- + GNU C libary
-Pulling remote image addsp/ngx_waf-prebuild:ngx-1.21.1-module-lts-glibc
-......
-......
-......
-Download complete!
-```
-
-If you see ``Download complete!`` then the download was successful and the module will be saved in the current directory.
-You can copy it to a directory and add a line to the top of `nginx.conf`.
-
-```nginx
-load_module "/path/to/ngx_http_waf_module.so";
-```
-
-Then close nginx and run `nginx -t`. If there are no errors, the module is loaded properly, otherwise your nginx does not support pre-built modules, so compile and install the module.
-
-
-::: tip NOTE
-
-Once we have updated the module it takes about two hours to compile and upload the module.
-
-:::
-
-### Compile and install
-
-Compiling and installing dynamic modules does not require recompiling the entire nginx, 
-only all modules, which is faster than static modules, 
+Compiling and installing dynamic modules does not require recompiling the entire nginx,
+only all modules, which is faster than static modules,
 which is the recommended way in this document.
 
 The process of downloading nginx source code and module source code is the same as for [Static Modules](#static-modules) and will not be repeated.
