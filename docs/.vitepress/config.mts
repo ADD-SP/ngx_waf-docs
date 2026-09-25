@@ -1,5 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
-import { chineseSearchOptimize, pagefindPlugin } from 'vitepress-plugin-pagefind'
+import { pagefindPlugin } from 'vitepress-plugin-pagefind'
 
 const mainRepo = 'https://github.com/ADD-SP/ngx_waf'
 const docsRepo = 'https://github.com/ADD-SP/ngx_waf-docs'
@@ -83,18 +83,6 @@ const zhSidebar: DefaultTheme.SidebarItem[] = [
   }
 ]
 
-const cjkRe = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/
-
-/**
- * Pagefind splits CJK queries into words itself, but running the query through
- * `Intl.Segmenter` keeps the behaviour consistent for older browsers and lifts
- * the match rate for words missing from the segmenter dictionary. Queries that
- * contain no CJK characters are passed through untouched.
- */
-function customSearchQuery(input: string) {
-  return cjkRe.test(input) ? chineseSearchOptimize(input) : input
-}
-
 export default defineConfig({
   base: process.env.docsBaseUrl ?? '/',
   head: [
@@ -165,8 +153,11 @@ export default defineConfig({
   vite: {
     plugins: [
       pagefindPlugin({
-        customSearchQuery,
         excludeSelector: ['img', 'a.header-anchor'],
+        // NOTE: functions passed to the plugin are serialized with
+        // `Function.prototype.toString` and evaluated in the browser, so they
+        // must not reference anything from this module's scope. Pagefind 1.5+
+        // segments CJK queries by itself, so no `customSearchQuery` is needed.
         filter: (item) => !item.route.includes('404'),
         locales: {
           root: {
