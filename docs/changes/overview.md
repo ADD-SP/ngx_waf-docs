@@ -7,7 +7,7 @@ lang: en
 
 This project maintains two release flow, *Long-term Support (LTS)* and *Current*.
 
-<img :src="$withBase('/versioning.svg')" alt="versioning">
+<img src="/versioning.svg" alt="versioning">
 
 ## [Long-term Support (LTS)](lts.md)
 

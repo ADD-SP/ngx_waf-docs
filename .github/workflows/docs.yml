@@ -1,6 +1,6 @@
 name: docs
 
-on: 
+on:
   push:
     branches: master
 
@@ -11,19 +11,24 @@ defaults:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       docsBaseUrl: '/ngx_waf-docs/'
     steps:
-      - uses: actions/checkout@v2
-        with: 
-          ref: ${{ github.ref }}
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
         with:
-          node-version: '14.15.5'
-      - name: Build & Deploy
-        uses: jenkey2011/vuepress-deploy@v1.8.1
-        env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          TARGET_BRANCH: gh-pages
-          BUILD_SCRIPT: set -e && yarn && yarn docs:build
-          BUILD_DIR: docs/.vuepress/dist/
+          ref: ${{ github.ref }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Build
+        run: bun run docs:build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/.vitepress/dist
+          publish_branch: gh-pages

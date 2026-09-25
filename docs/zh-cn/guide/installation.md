@@ -1,7 +1,7 @@
 ---
 title: 安装
 lang: zh-CN
-sidebarDepth: 3
+outline: [2, 3]
 ---
 
 # 安装
