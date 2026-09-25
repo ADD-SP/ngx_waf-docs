@@ -1,7 +1,7 @@
 ---
 title: 配置
 lang: zh-CN
-sidebarDepth: 3
+outline: [2, 3]
 ---
 
 # 配置

@@ -1,7 +1,7 @@
 ---
 title: Installation Guide
 lang: en
-sidebarDepth: 3
+outline: [2, 3]
 ---
 
 # Installation Guide
