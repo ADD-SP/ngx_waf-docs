@@ -31,6 +31,14 @@ lang: zh-CN
 
 ***
 
+## [6.1.11] - 2026-11-20 UTC+0800
+
+### 修复
+
+* 修复 nginx 1.29.6 及更高版本下 Under Attack Mode 无法识别 Cookie 的问题（[#154](https://github.com/ADD-SP/ngx_waf/issues/154)）。
+
+***
+
 ## [6.1.10] - 2025-01-25 UTC+0800
 
 ### 修复
@@ -134,4 +142,3 @@ lang: zh-CN
     * ADV：控制开关高级规则。
     * CMN-METH：等价于 `HEAD GET POST`。
     * ALL-METH：任意的 HTTP 请求方法都会启动检查。
-
